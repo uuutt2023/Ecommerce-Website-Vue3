@@ -1,9 +1,15 @@
 import { createApp } from 'vue';
 import App from './App.vue';
+
+// Vue 路由
 import router from './router';
 
 // BootStrap 5
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.js';
 
-createApp(App).use(router).mount('#app');
+// 国际化整合
+import i18n from '@/i18n';
+
+
+createApp(App).use(i18n).use(router).mount('#app');
