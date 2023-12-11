@@ -1,6 +1,5 @@
-
 <template>
-  <RouterView></RouterView>
+  <RouterView class="view"></RouterView>
 </template>
 
 <script setup></script>
@@ -10,5 +9,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+.view {
+  height: 100vh;
+  overflow: hidden;
 }
 </style>
