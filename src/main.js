@@ -11,5 +11,9 @@ import 'bootstrap/dist/js/bootstrap.bundle.js';
 // 国际化整合
 import i18n from '@/i18n';
 
+// 表单验证
+import './validation';
 
-createApp(App).use(i18n).use(router).mount('#app');
+let app = createApp(App);
+
+app.use(i18n).use(router).mount('#app');
