@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { defineAsyncComponent } from 'vue';
 
 const index = [
   {
@@ -9,24 +8,26 @@ const index = [
   {
     path: '/index',
     name: 'index',
-    component: () => import('@/views/Index/WebIndex.vue'),
     redirect: '/index/signIn',
-    meta: { title: '登录界面' },
+    component: () => import('@/views/Index/WebIndex.vue'),
     children: [
       {
         path: 'signIn',
         name: 'signIn',
-        component: () => defineAsyncComponent(() => import('@/views/Index/components/SignIn.vue')),
+        component: () => import('@/views/Index/components/SignIn.vue'),
+        meta: { title: '登录', keepAlive: true },
       },
       {
         path: 'signUp',
         name: 'signUp',
-        component: () => defineAsyncComponent(() => import('@/views/Index/components/SignUp.vue')),
+        component: () => import('@/views/Index/components/SignUp.vue'),
+        meta: { title: '注册' },
       },
       {
         path: 'forge',
         name: 'forge',
-        component: () => defineAsyncComponent(() => import('@/views/Index/components/ForgePwd.vue')),
+        component: () => import('@/views/Index/components/ForgePwd.vue'),
+        meta: { title: '重置密码' },
       },
     ],
   },
@@ -35,6 +36,14 @@ const index = [
 const router = createRouter({
   history: createWebHistory(),
   routes: [...index],
+});
+
+// 路由跳转 - 修改标题
+router.beforeEach((to, from, next) => {
+  if (to.meta?.title && to.meta.title) {
+    document.title = to.meta.title;
+  }
+  next();
 });
 
 export default router;
