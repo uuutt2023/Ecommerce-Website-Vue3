@@ -1,48 +1,88 @@
 <script setup>
-import VeeInput from '@/views/Index/components/VeeInput.vue';
-import { Form } from 'vee-validate';
+import VeeInput from '@/components/VeeInput.vue';
+import { Form as VeeForm } from 'vee-validate';
+import i18n from '@/i18n';
+import { ref } from 'vue';
+import * as Ysp from 'yup';
+// 用户输入数据
+const form = ref({
+  act: '',
+  pwd1: '',
+  pwd2: '',
+});
+// i18n 提取 t 方法
+const $i18n = (val, ...args) => i18n.global.t(val, ...args);
+// yup 校验规则
+const schema = Ysp.object({
+  act: Ysp.string().required($i18n('msg.required')),
+
+  pwd1: Ysp.string()
+    .required($i18n('msg.required'))
+    .test('unlikePwd', $i18n('msg.unlikePwd'), (val) =>
+      form.value.pwd2.trim().length > 0 ? val === form.value.pwd2 : true,
+    )
+    .min(8, $i18n('msg.minLength', { num: 8 })),
+
+  pwd2: Ysp.string()
+    .required($i18n('msg.required'))
+    .test('unlikePwd', $i18n('msg.unlikePwd'), (val) =>
+      form.value.pwd1.trim().length > 0 ? val === form.value.pwd1 : true,
+    )
+    .min(8, $i18n('msg.minLength', { num: 8 })),
+});
+
+const list_input = [
+  {
+    label: $i18n('label.username'),
+    name: 'act',
+    type: 'text',
+  },
+  {
+    label: $i18n('label.password_new'),
+    name: 'pwd1',
+    type: 'password',
+  },
+  {
+    label: $i18n('label.password_2'),
+    name: 'pwd2',
+    type: 'password',
+  },
+];
 </script>
 
 <template>
   <header>
-    <h2>找回账号</h2>
-    <h5>请输入您的邮箱账号找回密码。</h5>
+    <h2>{{ $t('webIndex.forgePwd.h1') }}</h2>
+    <h5>{{ $t('webIndex.forgePwd.h2') }}</h5>
   </header>
-  <Form class="d-grid my-4 p-3 p-md-4">
+  <!-- 校验表单 -->
+  <VeeForm
+    :validation-schema="schema"
+    class="d-grid my-3 my-md-4 p-3 p-md-4">
+    <!-- 输入框 -->
     <VeeInput
-      class="mb-3"
-      label-str="账号"
-      name="username"
-      rules="minLength:6|required"
-      type="text" />
-    <VeeInput
-      class="mb-3"
-      label-str="新密码"
-      name="password1"
-      rules="required"
-      type="password" />
-    <VeeInput
-      class="mb-3"
-      label-str="新密码确认"
-      name="password2"
-      rules="required"
-      type="password" />
+      v-for="(item, index) in list_input"
+      :key="index"
+      v-model="form[item.name]"
+      v-bind="item" />
+    <!-- 提交按钮 -->
     <button
       class="btn btn-success mt-4 p-2"
       type="submit">
-      找回
+      {{ $t('webIndex.forgePwd.submit') }}
     </button>
-  </Form>
+  </VeeForm>
+  <!-- 路由跳转按钮 -->
   <footer class="row justify-content-around">
     <RouterLink
       class="btn btn-primary col-5 p-2"
       to="/index/signIn">
-      记得密码啦？
+      {{ $t('button.jumpToSignIn') }}
     </RouterLink>
     <RouterLink
       class="btn btn-info col-5 p-2 text-white"
       to="/index/signUp">
-      重新注册
+      {{ $t('button.jumpToSignUp') }}
     </RouterLink>
   </footer>
 </template>
