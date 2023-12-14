@@ -4,7 +4,7 @@
   <div
     id="wrap"
     class="p-lg-5 p-sm-3 container-fluid">
-    <div class="input-box p-4 p-md-5 col-xxl-4 col-lg-6 col-md-7 col-10">
+    <div class="input-box p-4 p-md-5 col-xxl-4 col-lg-6 col-md-7 col-11">
       <RouterView v-slot="{ Component }">
         <KeepAlive>
           <component
@@ -27,12 +27,18 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+
+  @media screen and (max-width: 426px) {
+    justify-content: center;
+    background-size: 75%, 100%;
+  }
 }
 
 .input-box {
   background-color: #ffffff;
   box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.2);
   border-radius: 5px;
+  opacity: 0.9;
 
   form {
     background-color: #ffffff;
