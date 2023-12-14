@@ -9,24 +9,24 @@ const index = [
     path: '/index',
     name: 'index',
     redirect: '/index/signIn',
-    component: () => import('@/views/Index/WebIndex.vue'),
+    component: () => import('@/views/index/WebIndex.vue'),
     children: [
       {
         path: 'signIn',
         name: 'signIn',
-        component: () => import('@/views/Index/components/SignIn.vue'),
+        component: () => import('@/views/index/components/SignIn.vue'),
         meta: { title: '登录', keepAlive: true },
       },
       {
         path: 'signUp',
         name: 'signUp',
-        component: () => import('@/views/Index/components/SignUp.vue'),
+        component: () => import('@/views/index/components/SignUp.vue'),
         meta: { title: '注册' },
       },
       {
         path: 'forge',
         name: 'forge',
-        component: () => import('@/views/Index/components/ForgePwd.vue'),
+        component: () => import('@/views/index/components/ForgePwd.vue'),
         meta: { title: '重置密码' },
       },
     ],
