@@ -1,3 +1,35 @@
 {
-  "message": "hello i18n !!"
+  "msg": {
+    "required": "不能为空哦~",
+    "minLength": "请输入至少{num}个及以上的字符",
+    "unlikePwd": "密码不一致哦~"
+  },
+  "label": {
+    "username": "账号",
+    "password_1": "密码",
+    "password_2": "确认密码",
+    "password_new": "新密码"
+  },
+  "button": {
+    "jumpToSignIn": "老用户登录",
+    "jumpToSignUp": "新用户注册",
+    "jumpToForgePwd": "忘记密码"
+  },
+  "webIndex": {
+    "signIn": {
+      "h1": "登录",
+      "h2": "请输入您的账号与密码",
+      "submit": "登录"
+    },
+    "signUp": {
+      "h1": "注册",
+      "h2": "没有账号？那就注册一个吧。",
+      "submit": "注册"
+    },
+    "forgePwd": {
+      "h1": "找回密码",
+      "h2": "请输入您的账号重置密码",
+      "submit": "重置密码"
+    }
+  }
 }
