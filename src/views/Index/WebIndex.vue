@@ -1,71 +1,134 @@
-<script setup></script>
+<script setup>
+import { i18n, setI18nLanguage } from '@/i18n';
+import { ref } from 'vue'; // 引用组件
+
+const isEnglish = ref(i18n.global.locale?.value === 'en');
+
+function changeLang() {
+  setI18nLanguage(isEnglish.value ? 'zh-CN' : 'en');
+}
+</script>
 
 <template>
-  <div
-    id="wrap"
-    class="p-lg-5 p-sm-3 container-fluid">
-    <div class="input-box p-4 p-md-5 col-xxl-4 col-lg-6 col-md-7 col-11">
-      <RouterView v-slot="{ Component }">
-        <KeepAlive>
-          <component
-            :is="Component"
-            v-if="$route.meta.keepAlive" />
-        </KeepAlive>
-      </RouterView>
-      <RouterView v-if="!$route.meta.keepAlive"></RouterView>
-    </div>
+  <div id="wrap">
+    <header>
+      <i class="logo-circle" />
+      <h1 class="mt-2 mb-0">
+        {{ $t('logo.title') }}
+        <small>{{ $t('logo.title.small') }}</small>
+      </h1>
+    </header>
+    <RouterView />
+    <footer class="row justify-content-between">
+      <p class="col-12 text-center">{{ $t('msg.skill') }}</p>
+      <i class="border border-1 iconfont icon-vue col-2" />
+      <i class="border border-1 iconfont icon-mock col-2" />
+      <i
+        :class="isEnglish && 'i18n-click'"
+        class="border border-1 btn iconfont icon-i18n col-2"
+        @click="changeLang" />
+    </footer>
   </div>
 </template>
 
 <style lang="scss">
+@use '~@/assets/scss/_utils';
+
 #wrap {
-  background:
-    url('~@/assets/images/index/Illustration.png') no-repeat -40% bottom,
-    linear-gradient(to right top, #365dfb, #679cf6) no-repeat;
-  background-size: 970px, 100%;
+  padding: 40px 32px;
+  height: 100vh;
+  @extend %flex-column;
+  justify-content: space-between;
 
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  header {
+    @extend %flex-center;
+    flex-direction: column;
+  }
 
-  @media screen and (max-width: 426px) {
-    justify-content: center;
-    background-size: 75%, 100%;
+  .btn {
+    @extend %flex-center;
   }
 }
 
-.input-box {
-  background-color: #ffffff;
-  box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-  opacity: 0.9;
+.i18n-click {
+  /* 切换语言 */
+  background-color: #ea4d8a !important;
+  color: white !important;
 
-  form {
-    background-color: #ffffff;
-    box-shadow: 0 1px 4px 0 #e5e9f2;
-    border-radius: 5px;
-    margin-top: 40px;
+  &:after {
+    color: #ea4d8a;
+  }
+}
+
+.iconfont {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 93px;
+  height: 44px;
+  box-sizing: border-box;
+  border-radius: 6px;
+  position: relative;
+
+  font-size: 24px;
+
+  $list:
+    [ 'vue',
+    'i18n',
+    'mock'];
+
+  &:after {
+    display: block;
+    position: absolute;
+    bottom: -1.75em;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
   }
 
-  header {
-    * {
-      font-weight: normal;
-      font-stretch: normal;
-      letter-spacing: 0px;
-    }
-
-    h2 {
-      color: #31394d;
-    }
-
-    h5 {
-      color: #748aa1;
+  @each $item in $list {
+    &.icon-#{$item}:after {
+      content: $item;
     }
   }
+}
 
-  [type='submit'] {
-    background-color: #29cb97;
-    border-color: #29cb97;
+.logo-circle {
+  /* LOGO图 */
+  box-shadow: 0 5px 10px 0 rgba(27, 27, 29, 0.15);
+  background: rgb(255, 255, 255);
+  border-radius: 50%;
+  background: url('~@/assets/images/index/Logo.png') no-repeat center;
+  display: block;
+  width: 76px;
+  aspect-ratio: 1 / 1;
+
+  & + h1 {
+    color: rgb(45, 45, 47);
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+    letter-spacing: 0;
+    text-align: center;
+    white-space: nowrap;
+    @extend %flex-column;
+
+    small {
+      color: rgb(45, 45, 47);
+      font-size: 18px;
+      font-weight: 250;
+      line-height: 22px;
+      letter-spacing: 0;
+      text-align: center;
+      margin-top: 4px;
+    }
   }
+}
+
+input {
+  height: 44px;
+  border-radius: 6px;
+  background: rgb(246, 246, 246);
 }
 </style>
