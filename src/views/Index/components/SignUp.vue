@@ -1,9 +1,11 @@
 <script setup>
-import VeeInput from '@/components/VeeInput.vue';
-import { Form } from 'vee-validate';
 import { ref } from 'vue';
-import i18n from '@/i18n';
+import { useI18n } from 'vue-i18n';
+
 import * as Ysp from 'yup';
+import VeeForm from '@/components/VeeForm.vue';
+
+const { t } = useI18n();
 
 const form = ref({
   act: '',
@@ -11,77 +13,62 @@ const form = ref({
   pwd2: '',
 });
 
-const $i18n = (val, ...args) => i18n.global.t(val, ...args);
+const item = {
+  list: [
+    {
+      label: t('label.account'),
+      name: 'act',
+      type: 'text',
+    },
+    {
+      label: t('label.password'),
+      name: 'pwd1',
+      type: 'password',
+    },
+    {
+      label: t('label.password-2'),
+      name: 'pwd2',
+      type: 'password',
+    },
+  ],
+  schema: Ysp.object({
+    act: Ysp.string().required(t('error.required')),
 
-const schema = Ysp.object({
-  act: Ysp.string().required($i18n('msg.required')),
-  pwd1: Ysp.string()
-    .required($i18n('msg.required'))
-    .test('unlikePwd', $i18n('msg.unlikePwd'), (val) =>
-      form.value.pwd2.trim().length > 0 ? val === form.value.pwd2 : true,
-    )
-    .min(8, $i18n('msg.minLength', { num: 8 })),
-  pwd2: Ysp.string()
-    .required($i18n('msg.required'))
-    .test('unlikePwd', $i18n('msg.unlikePwd'), (val) =>
-      form.value.pwd1.trim().length > 0 ? val === form.value.pwd1 : true,
-    )
-    .min(8, $i18n('msg.minLength', { num: 8 })),
-});
+    pwd1: Ysp.string()
+      .required(t('error.required'))
+      .test('unlikePwd', t('error.unlikePwd'), (val) =>
+        form.value.pwd2.trim().length > 0 ? val === form.value.pwd2 : true,
+      )
+      .min(8, t('error.minLength', { num: 8 })),
 
-const list_input = [
-  {
-    label: $i18n('label.username'),
-    name: 'act',
-    type: 'text',
-  },
-  {
-    label: $i18n('label.password_1'),
-    name: 'pwd1',
-    type: 'password',
-  },
-  {
-    label: $i18n('label.password_2'),
-    name: 'pwd2',
-    type: 'password',
-  },
-];
+    pwd2: Ysp.string()
+      .required(t('error.required'))
+      .test('unlikePwd', t('error.unlikePwd'), (val) =>
+        form.value.pwd1.trim().length > 0 ? val === form.value.pwd1 : true,
+      )
+      .min(8, t('error.minLength', { num: 8 })),
+  }),
+  submit: t('submit.signUp'),
+};
 </script>
 
 <template>
-  <header>
-    <h2>{{ $t('webIndex.signUp.h1') }}</h2>
-    <h5>{{ $t('webIndex.signUp.h2') }}</h5>
-  </header>
-  <Form
-    :validation-schema="schema"
-    class="d-grid my-3 my-md-4 p-3 p-md-4">
-    <!-- 输入框 -->
-    <VeeInput
-      v-for="(item, index) in list_input"
-      :key="index"
-      v-model="form[item.name]"
-      v-bind="item" />
-
-    <button
-      class="btn btn-success mt-4 p-2"
-      type="submit">
-      {{ $t('webIndex.signUp.submit') }}
-    </button>
-  </Form>
-  <footer class="row justify-content-around">
-    <RouterLink
-      class="btn btn-primary col-5 p-2"
-      to="/index/signIn">
-      {{ $t('button.jumpToSignIn') }}
-    </RouterLink>
-
-    <RouterLink
-      class="btn btn-info col-5 p-2 text-white"
-      to="/index/forge">
-      {{ $t('button.jumpToForgePwd') }}
-    </RouterLink>
-  </footer>
+  <VeeForm
+    v-model="form"
+    v-bind="item">
+    <template v-slot:btn>
+      <RouterLink
+        class="btn btn-secondary col-5"
+        to="/index/signIn">
+        {{ $t('jump.toSignIn') }}
+      </RouterLink>
+    </template>
+    <template v-slot:forge>
+      <RouterLink
+        class="col-auto text-center mx-auto mt-2 text-decoration-none"
+        to="/index/forge">
+        {{ $t('jump.toForgePwd') }}
+      </RouterLink>
+    </template>
+  </VeeForm>
 </template>
-
-<style lang="scss" scoped></style>
