@@ -15,7 +15,7 @@ const index = [
         path: 'signIn',
         name: 'signIn',
         component: () => import('@/views/index/components/SignIn.vue'),
-        meta: { title: '登录', keepAlive: true },
+        meta: { title: '登录' },
       },
       {
         path: 'signUp',
@@ -30,6 +30,18 @@ const index = [
         meta: { title: '重置密码' },
       },
     ],
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    component: () => import('@/views/admin/WebAdmin.vue'),
+    meta: { title: '后台管理' },
+  },
+  {
+    path: '/user',
+    name: 'user',
+    component: () => import('@/views/user/WebUser.vue'),
+    meta: { title: '首页' },
   },
 ];
 
