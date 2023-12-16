@@ -4,9 +4,9 @@ import { useI18n } from 'vue-i18n';
 
 import * as Ysp from 'yup';
 import VeeForm from '@/components/VeeForm.vue';
-import router from '@/router';
 import { veeLabel, veeRules } from '@/assets/js/rules';
 import { submitPost } from '@/assets/js/submit';
+import router from '@/router';
 
 const { t } = useI18n();
 
@@ -17,18 +17,18 @@ const form = ref({
 });
 const rules = veeRules(form);
 const item = {
-  list: [veeLabel.act, veeLabel.pwd1, veeLabel.pwd2],
+  list: [veeLabel.act, veeLabel.pwdN, veeLabel.pwd2],
   schema: Ysp.object({
     act: rules.act,
     pwd1: rules.pwd1,
     pwd2: rules.pwd2,
   }),
-  submit: t('submit.signUp'),
+  submit: t('submit.forgePwd'),
 };
 
-function onSignUp(values, actions) {
+function changePwd(values, actions) {
   submitPost(
-    '/api/user/signUp',
+    '/api/user/changePwd',
     {
       username: values.act,
       password: values.pwd1,
@@ -36,13 +36,11 @@ function onSignUp(values, actions) {
     (resp) => {
       if (resp.data.result === 'error') {
         actions.setErrors({
-          act: '该账号已注册，请重新输入',
+          act: '账号不存在',
         });
       } else {
-        // TODO 跳转首页
-        setTimeout(() => {
-          router.push('/index/signIn?show=0');
-        }, 1000);
+        // 修改成功，跳转到登录页面
+        router.push('/index/signIn?show=1');
       }
     },
   );
@@ -53,19 +51,12 @@ function onSignUp(values, actions) {
   <VeeForm
     v-model="form"
     v-bind="item"
-    @submit="onSignUp">
+    @submit="changePwd">
     <template v-slot:btn>
       <RouterLink
         class="btn btn-secondary col-5"
         to="/index/signIn">
         {{ $t('jump.toSignIn') }}
-      </RouterLink>
-    </template>
-    <template v-slot:forge>
-      <RouterLink
-        class="col-auto text-center mx-auto mt-2 text-decoration-none"
-        to="/index/changePwd">
-        {{ $t('jump.toForgePwd') }}
       </RouterLink>
     </template>
   </VeeForm>

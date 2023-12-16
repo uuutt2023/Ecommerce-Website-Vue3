@@ -3,8 +3,8 @@ import { i18n, setI18nLanguage } from '@/i18n';
 import { ref } from 'vue'; // 引用组件
 
 const isEnglish = ref(i18n.global.locale?.value === 'en');
-
 function changeLang() {
+  // 切换语言
   setI18nLanguage(isEnglish.value ? 'zh-CN' : 'en');
 }
 </script>
@@ -34,11 +34,18 @@ function changeLang() {
 <style lang="scss">
 @use '~@/assets/scss/_utils';
 
+.center {
+  position: absolute;
+  left: 32px;
+  right: 32px;
+}
+
 #wrap {
   padding: 40px 32px;
   height: 100vh;
   @extend %flex-column;
   justify-content: space-between;
+  position: relative;
 
   header {
     @extend %flex-center;

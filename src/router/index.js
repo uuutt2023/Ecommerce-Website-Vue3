@@ -1,4 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory, useRoute } from 'vue-router';
+import store from '@/store';
 
 const index = [
   {
@@ -24,9 +25,9 @@ const index = [
         meta: { title: '注册' },
       },
       {
-        path: 'forge',
-        name: 'forge',
-        component: () => import('@/views/index/components/ForgePwd.vue'),
+        path: 'changePwd',
+        name: 'changePwd',
+        component: () => import('@/views/index/components/ChangePwd.vue'),
         meta: { title: '重置密码' },
       },
     ],
@@ -50,12 +51,15 @@ const router = createRouter({
   routes: [...index],
 });
 
-// 路由跳转 - 修改标题
+// 路由跳转 - 修改标题，撤销加载动画
 router.beforeEach((to, from, next) => {
   if (to.meta?.title && to.meta.title) {
     document.title = to.meta.title;
   }
-  next();
+  // 取消动画
+  store.dispatch('setLoading', false).then(() => next());
 });
 
 export default router;
+
+export const getRoute = () => useRoute();

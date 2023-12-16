@@ -2,6 +2,7 @@
 import { Field, Form } from 'vee-validate';
 import { ObjectSchema } from 'yup';
 import { ref, watchEffect } from 'vue';
+import store from '@/store';
 
 // 接收父参数
 const { modelValue } = defineProps({
@@ -23,12 +24,10 @@ const { modelValue } = defineProps({
 const emits = defineEmits(['update:modelValue']);
 // 转存
 const localValue = ref(modelValue);
-
 const updateValue = (newValue) => {
   // 提交更新
   emits('update:modelValue', newValue);
 };
-
 watchEffect(() => {
   // 监听 localValue 的变化，一旦发生变化，更新父组件的 modelValue
   updateValue(localValue.value);
@@ -39,7 +38,7 @@ watchEffect(() => {
  * */
 const toggleInputStyle = (msg, val) =>
   (msg && msg.length > 0 ? 'is-invalid'
-  : val.trim().length > 0 ? 'is-valid'
+  : val && val.trim().length > 0 ? 'is-valid'
   : ''
   ).concat(' form-control');
 </script>
@@ -77,7 +76,11 @@ const toggleInputStyle = (msg, val) =>
       <slot name="btn" />
       <button
         class="btn btn-primary col-5"
+        :class="store.state.isLoading && 'active'"
         type="submit">
+        <span
+          v-if="store.state.isLoading"
+          class="spinner-border spinner-border-sm m-0 me-2"></span>
         {{ submit }}
       </button>
     </div>
