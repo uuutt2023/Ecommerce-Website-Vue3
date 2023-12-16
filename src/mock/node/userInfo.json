@@ -1,0 +1,25 @@
+{
+  "result": "success",
+  "data": {
+    "userinfo": [
+      {
+        "username": "admin",
+        "password": "123456",
+        "roles": "admin",
+        "name": "张三"
+      },
+      {
+        "username": "uuutt",
+        "password": "123456",
+        "roles": "user",
+        "name": "测试1"
+      },
+      {
+        "username": "@word(3, 5)",
+        "password": "123456",
+        "roles": "user",
+        "name": "@cname"
+      }
+    ]
+  }
+}
