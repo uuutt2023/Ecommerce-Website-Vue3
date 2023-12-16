@@ -1,0 +1,11 @@
+{
+  "logo.title": "Team 5037",
+  "logo.title.small": "Vue3 e-commerce website",
+  "error.required": "Please do not leave it blank.",
+  "error.minLength": "Please enter at least {num} characters or more.",
+  "submit.signIn": "Sign In Now",
+  "label.account": "Account",
+  "label.password": "Password",
+  "label.password-n": "New Password",
+  "label.password-2": "Confirm Password"
+}
