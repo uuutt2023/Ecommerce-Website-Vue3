@@ -4,7 +4,7 @@ module.exports = {
     autoprefixer: {},
     'postcss-px-to-viewport-8-plugin': {
       unitToConvert: 'px', // 要转化的单位
-      viewportWidth: 1440, // UI设计稿的宽度
+      viewportWidth: 375, // UI设计稿的宽度
       unitPrecision: 6, // 转换后的精度，即小数点位数
       propList: ['*'], // 指定转换的css属性的单位，*代表全部css属性的单位都进行转换
       viewportUnit: 'vw', // 指定需要转换成的视窗单位，默认vw
@@ -20,7 +20,7 @@ module.exports = {
       landscapeWidth: 1440, //横屏时使用的视口宽度
     },
     'postcss-mobile-forever': {
-      maxDisplayWidth: 1440,
+      maxDisplayWidth: 375,
     },
   },
 };
