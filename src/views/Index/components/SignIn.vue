@@ -3,10 +3,12 @@ import { nextTick, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import * as Ysp from 'yup';
-import VeeForm from '@/components/VeeForm.vue';
-import router, { getRoute } from '@/router';
+import { getRoute } from '@/router';
 import { veeLabel, veeRules } from '@/assets/js/rules';
-import { submitPost } from '@/assets/js/submit';
+import { Form } from 'vee-validate';
+import VeeField from '@/components/VeeField.vue';
+
+import { onSignIn } from '@/assets/js/submit';
 
 const { t } = useI18n();
 const form = ref({
@@ -17,26 +19,13 @@ const rules = veeRules(form);
 // 表单基本数据
 const item = {
   list: [veeLabel.act, veeLabel.pwd],
-  schema: Ysp.object({
-    act: rules.act,
-    pwd: rules.pwd,
-  }),
   submit: t('submit.signIn'),
 };
 
-function onSignIn(values, actions) {
-  submitPost('/api/user/signIn', { username: values.act, password: values.pwd }, (resp) => {
-    if (resp.data.result === 'error') {
-      actions.setErrors({
-        act: '用户名或密码错误',
-        pwd: '用户名或密码错误',
-      });
-    } else {
-      // 跳转首页
-      router.push(`/${resp.data.data.roles}`);
-    }
-  });
-}
+const schema = Ysp.object({
+  act: rules.act,
+  pwd: rules.pwd,
+});
 
 // 弹窗提示
 const toast = reactive({
@@ -56,6 +45,7 @@ nextTick(() => {
 </script>
 
 <template>
+  <!-- 弹窗提示 -->
   <Transition
     enter-active-class="animate__animated animate__fadeIn"
     leave-active-class="animate__animated animate__fadeOut">
@@ -74,23 +64,27 @@ nextTick(() => {
     </div>
   </Transition>
 
-  <VeeForm
-    v-model="form"
-    v-bind="item"
+  <Form
+    :validation-schema="schema"
+    class="row form"
     @submit="onSignIn">
-    <template v-slot:btn>
-      <RouterLink
-        class="btn btn-secondary col-5"
-        to="/index/signUp">
-        {{ $t('jump.toSignUp') }}
-      </RouterLink>
-    </template>
-    <template v-slot:forge>
-      <RouterLink
-        class="col-auto text-center mx-auto mt-2 text-decoration-none"
-        to="/index/changePwd">
-        {{ $t('jump.toForgePwd') }}
-      </RouterLink>
-    </template>
-  </VeeForm>
+    <VeeField
+      v-model="form"
+      v-bind="item">
+      <template v-slot:btn>
+        <RouterLink
+          class="text-white text-decoration-none"
+          to="/index/signUp">
+          {{ $t('jump.toSignUp') }}
+        </RouterLink>
+      </template>
+      <template v-slot:forge>
+        <RouterLink
+          class="col-auto text-center mx-auto mt-2 text-decoration-none"
+          to="/index/changePwd">
+          {{ $t('jump.toForgePwd') }}
+        </RouterLink>
+      </template>
+    </VeeField>
+  </Form>
 </template>

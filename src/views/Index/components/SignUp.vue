@@ -3,10 +3,10 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import * as Ysp from 'yup';
-import VeeForm from '@/components/VeeForm.vue';
-import router from '@/router';
 import { veeLabel, veeRules } from '@/assets/js/rules';
-import { submitPost } from '@/assets/js/submit';
+import { onSignUp } from '@/assets/js/submit';
+import VeeField from '@/components/VeeField.vue';
+import { Form } from 'vee-validate';
 
 const { t } = useI18n();
 
@@ -18,55 +18,38 @@ const form = ref({
 const rules = veeRules(form);
 const item = {
   list: [veeLabel.act, veeLabel.pwd1, veeLabel.pwd2],
-  schema: Ysp.object({
-    act: rules.act,
-    pwd1: rules.pwd1,
-    pwd2: rules.pwd2,
-  }),
   submit: t('submit.signUp'),
 };
 
-function onSignUp(values, actions) {
-  submitPost(
-    '/api/user/signUp',
-    {
-      username: values.act,
-      password: values.pwd1,
-    },
-    (resp) => {
-      if (resp.data.result === 'error') {
-        actions.setErrors({
-          act: '该账号已注册，请重新输入',
-        });
-      } else {
-        // TODO 跳转首页
-        setTimeout(() => {
-          router.push('/index/signIn?show=0');
-        }, 1000);
-      }
-    },
-  );
-}
+const schema = Ysp.object({
+  act: rules.act,
+  pwd1: rules.pwd1,
+  pwd2: rules.pwd2,
+});
 </script>
 
 <template>
-  <VeeForm
-    v-model="form"
-    v-bind="item"
+  <Form
+    :validation-schema="schema"
+    class="row form"
     @submit="onSignUp">
-    <template v-slot:btn>
-      <RouterLink
-        class="btn btn-secondary col-5"
-        to="/index/signIn">
-        {{ $t('jump.toSignIn') }}
-      </RouterLink>
-    </template>
-    <template v-slot:forge>
-      <RouterLink
-        class="col-auto text-center mx-auto mt-2 text-decoration-none"
-        to="/index/changePwd">
-        {{ $t('jump.toForgePwd') }}
-      </RouterLink>
-    </template>
-  </VeeForm>
+    <VeeField
+      v-model="form"
+      v-bind="item">
+      <template v-slot:btn>
+        <RouterLink
+          class="text-white text-decoration-none"
+          to="/index/signIn">
+          {{ $t('jump.toSignIn') }}
+        </RouterLink>
+      </template>
+      <template v-slot:forge>
+        <RouterLink
+          class="col-auto text-center mx-auto mt-2 text-decoration-none"
+          to="/index/changePwd">
+          {{ $t('jump.toForgePwd') }}
+        </RouterLink>
+      </template>
+    </VeeField>
+  </Form>
 </template>

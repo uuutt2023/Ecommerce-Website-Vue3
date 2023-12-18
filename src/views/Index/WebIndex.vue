@@ -3,6 +3,7 @@ import { i18n, setI18nLanguage } from '@/i18n';
 import { ref } from 'vue'; // 引用组件
 
 const isEnglish = ref(i18n.global.locale?.value === 'en');
+
 function changeLang() {
   // 切换语言
   setI18nLanguage(isEnglish.value ? 'zh-CN' : 'en');
@@ -31,7 +32,7 @@ function changeLang() {
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @use '~@/assets/scss/_utils';
 
 .center {
@@ -51,10 +52,9 @@ function changeLang() {
     @extend %flex-center;
     flex-direction: column;
   }
+}
 
-  .btn {
-    @extend %flex-center;
-  }
+a {
 }
 
 .i18n-click {
