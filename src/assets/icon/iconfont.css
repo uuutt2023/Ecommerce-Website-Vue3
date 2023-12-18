@@ -1,45 +1,127 @@
 @font-face {
-    font-family: "iconfont";
-    /* Project id  */
-    src: url('iconfont.ttf?t=1702647251406') format('truetype');
+  font-family: "iconfont"; /* Project id 4375927 */
+  src: url('iconfont.woff2?t=1702727351517') format('woff2'),
+  url('iconfont.woff?t=1702727351517') format('woff'),
+  url('iconfont.ttf?t=1702727351517') format('truetype');
 }
 
 .iconfont {
-    font-family: "iconfont", emoji !important;
-    font-size: 16px;
-    font-style: normal;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-i18n:before {
-    content: "\e605";
+.icon-search:before {
+  content: "\e628";
 }
 
-.icon-vue:before {
-    content: "\e69a";
+.icon-back:before {
+  content: "\e627";
 }
 
-.icon-mock:before {
-    content: "\e619";
+.icon-set-up:before {
+  content: "\e626";
 }
 
-.icon-shopCart:before {
-    content: "\e60c";
+.icon-layout-spread:before {
+  content: "\e622";
 }
 
-.icon-like:before {
-    content: "\e664";
+.icon-detail:before {
+  content: "\e624";
 }
 
-.icon-home:before {
-    content: "\e67a";
+.icon-layout-top-bottom:before {
+  content: "\e623";
 }
 
 .icon-me:before {
-    content: "\e67b";
+  content: "\e602";
 }
 
-.icon-more:before {
-    content: "\e67c";
+.icon-upload:before {
+  content: "\e603";
 }
+
+.icon-cart:before {
+  content: "\e601";
+}
+
+.icon-more--fill:before {
+  content: "\e609";
+}
+
+.icon-close:before {
+  content: "\e613";
+}
+
+.icon-tick-fill:before {
+  content: "\e621";
+}
+
+.icon-tick:before {
+  content: "\e620";
+}
+
+.icon-home:before {
+  content: "\e611";
+}
+
+.icon-home-fill:before {
+  content: "\e610";
+}
+
+.icon-add:before {
+  content: "\e612";
+}
+
+.icon-info:before {
+  content: "\e617";
+}
+
+.icon-layout-four-compartments:before {
+  content: "\e625";
+}
+
+.icon-down-pointing-arrow:before {
+  content: "\e616";
+}
+
+.icon-up-pointing-arrow:before {
+  content: "\e615";
+}
+
+.icon-like:before {
+  content: "\e604";
+}
+
+.icon-successes:before {
+  content: "\e607";
+}
+
+.icon-like-fill:before {
+  content: "\e614";
+}
+
+.icon-successes-fill:before {
+  content: "\e608";
+}
+
+.icon-i18n:before {
+  content: "\e605";
+}
+
+.icon-help:before {
+  content: "\e606";
+}
+
+.icon-vue:before {
+  content: "\e618";
+}
+
+.icon-mock:before {
+  content: "\e619";
+}
+
