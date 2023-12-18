@@ -24,7 +24,7 @@ store.dispatch('setMockPath', mockPaths).then(() =>
     if (item?.todo instanceof Function) {
       Mock.mock(item.url, item?.type, item.todo);
     } else {
-      console.log(Mock.mock(item.url, item?.type, require(`./node/${item.name}.json`)));
+      Mock.mock(item.url, item?.type, require(`./node/${item.name}.json`));
     }
   }),
 );

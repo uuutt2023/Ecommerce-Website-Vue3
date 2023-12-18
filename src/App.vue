@@ -3,7 +3,9 @@ import { nextTick, ref, watch } from 'vue';
 import { i18n } from '@/i18n';
 
 const isRouterAlive = ref(true);
-
+/**
+ * 监控语言环境，不刷新实时加载
+ * */
 watch(i18n.global.locale, () => {
   isRouterAlive.value = false;
   nextTick(() => {

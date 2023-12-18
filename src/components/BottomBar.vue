@@ -1,5 +1,7 @@
 <script setup></script>
 
-<template></template>
+<template>
+  <div>底部Tab标签</div>
+</template>
 
 <style lang="scss" scoped></style>

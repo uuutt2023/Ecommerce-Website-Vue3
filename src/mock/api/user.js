@@ -1,7 +1,7 @@
 import userJson from '@/mock/node/userInfo.json';
 import axios from 'axios';
 
-export const getAll = [{ name: 'userInfo', url: '/api/user', path: '/api/user' }];
+export const GetAll = [{ name: 'userInfo', url: '/api/user', path: '/api/user' }];
 
 export const ChangePwd = [
   {
@@ -11,7 +11,7 @@ export const ChangePwd = [
     path: '/api/user/changePwd',
     todo: (req) => {
       const { username, password } = JSON.parse(req?.body);
-      // TODO 判断账号是否存在
+      // 判断账号是否存在
       let findAcc = [...userJson.data.userinfo].find((u) => u.username === username);
       if (findAcc) {
         findAcc.password = password;

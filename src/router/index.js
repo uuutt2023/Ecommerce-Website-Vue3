@@ -43,6 +43,15 @@ const index = [
     name: 'user',
     component: () => import('@/views/user/WebUser.vue'),
     meta: { title: '首页' },
+    redirect: '/user/home',
+    children: [
+      {
+        path: 'home',
+        name: 'home',
+        component: () => import('@/views/user/components/UserHome.vue'),
+        meta: { title: '猫猫主页' },
+      },
+    ],
   },
 ];
 
