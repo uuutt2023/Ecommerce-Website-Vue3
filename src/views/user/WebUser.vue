@@ -1,7 +1,25 @@
 <script setup></script>
 
 <template>
-  <div>网站用户首页</div>
+  <main>
+    <RouterView />
+  </main>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+@use '~@/assets/scss/utils';
+
+main {
+  height: 100%;
+  @extend %flex-column;
+
+  & > * {
+    padding: 0 20px;
+  }
+}
+
+.iconfont {
+  font-size: 22px;
+  width: 24px;
+}
+</style>

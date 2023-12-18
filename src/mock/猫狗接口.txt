@@ -1,0 +1,3 @@
+随机猫猫图：https://api.thecatapi.com/v1/images/search
+参数：limit=10  随机 n 张
+官方文档：https://developers.thecatapi.com/
