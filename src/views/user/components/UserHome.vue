@@ -27,7 +27,7 @@ import BottomBar from '@/components/BottomBar.vue';
   </TopBar>
 
   <WaterFall
-    :click-url="'/api/detail/cat'"
+    :click-url="'/detail/cat'"
     :count="6"
     :url="'/api/card/list'" />
 

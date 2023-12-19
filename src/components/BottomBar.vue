@@ -19,7 +19,7 @@ const active = ref(0);
 @use '~@/assets/scss/utils';
 
 nav {
-  height: 10vh;
+  height: 96px;
   display: flex;
   align-items: stretch;
   justify-content: space-around;

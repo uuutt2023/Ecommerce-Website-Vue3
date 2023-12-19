@@ -58,6 +58,19 @@ const options = {
   threshold: 0.5, // 元素可见度的阈值，这里设置为50%
 };
 
+const observer = new IntersectionObserver((entries, observer) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      const image = entry.target;
+      const src = image.getAttribute('data-src');
+      image.setAttribute('src', src);
+      observer.unobserve(image);
+    }
+  });
+}, options);
+
+listRender.value.forEach((img) => observer.observe(img));
+
 nextTick(() => {
   new IntersectionObserver(
     () => canLoading.value && !isTouch.value && getListImages(),
@@ -85,6 +98,7 @@ nextTick(() => {
       item-selector=".card">
       <div
         v-for="item in listRender"
+        v-show="item.url"
         :key="item.id"
         v-masonry-tile
         class="card m-2 mx-md-1"
