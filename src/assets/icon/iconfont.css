@@ -11,6 +11,7 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding: 0;
 }
 
 .icon-search:before {
@@ -45,11 +46,11 @@
   content: "\e603";
 }
 
-.icon-cart:before {
+.icon-cart-fill:before {
   content: "\e601";
 }
 
-.icon-more--fill:before {
+.icon-more-fill:before {
   content: "\e609";
 }
 
