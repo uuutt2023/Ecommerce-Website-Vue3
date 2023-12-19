@@ -4,17 +4,20 @@
   <header>
     <div
       id="bar"
-      class="row">
-      <slot name="left" />
-      <slot name="title" />
-      <slot name="right" />
+      class="row d-flex justify-content-between align-items-center">
+      <div class="col">
+        <slot name="left" />
+      </div>
+      <div class="col">
+        <slot name="title" />
+      </div>
+      <div class="col d-inline-flex justify-content-end">
+        <slot name="right" />
+      </div>
     </div>
-    <div class="title row">
+    <div class="title row mb-2">
       <slot name="section" />
     </div>
-    <nav>
-      <slot name="nav" />
-    </nav>
   </header>
 </template>
 
@@ -33,10 +36,5 @@ header {
 
 .title {
   height: 56px;
-}
-
-nav {
-  width: 100%;
-  height: 38px;
 }
 </style>
