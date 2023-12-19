@@ -7,8 +7,6 @@ import router from './router';
 import store from './store';
 // Mock.js 模拟数据接口
 import '@/mock/index';
-// 移动端上划刷新
-import infiniteScroll from 'vue3-infinite-scroll-better';
 
 // BootStrap 5
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -19,11 +17,12 @@ import 'animate.css';
 import '@/assets/icon/iconfont.css';
 // 国际化整合
 import { i18n } from '@/i18n';
+// 瀑布流布局
+import { VueMasonryPlugin } from 'vue-masonry';
 
 let app = createApp(App);
-
 app.use(i18n);
 app.use(store);
 app.use(router);
-app.use(infiniteScroll);
+app.use(VueMasonryPlugin);
 app.mount('#app');
