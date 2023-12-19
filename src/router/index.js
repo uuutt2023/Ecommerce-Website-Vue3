@@ -53,6 +53,18 @@ const index = [
       },
     ],
   },
+  {
+    path: '/detail',
+    name: 'detail',
+    children: [
+      {
+        path: 'cat',
+        name: 'cat',
+        component: () => import('@/views/user/components/CatDetail.vue'),
+        meta: { title: '详情页' },
+      },
+    ],
+  },
 ];
 
 const router = createRouter({
