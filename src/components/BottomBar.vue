@@ -1,8 +1,21 @@
 <script setup>
 import { ref } from 'vue';
+import router from '@/router';
 
 const listBtn = ['icon-home-fill', 'icon-more-fill', 'icon-like-fill', 'icon-me'];
 const active = ref(0);
+
+const jumpMap = {
+  0: '/user/home',
+  1: '/user/categories',
+  2: '/user/favorites',
+  3: '/user/profile',
+};
+
+function jumpToPage(index) {
+  active.value = index;
+  router.push(jumpMap[index]);
+}
 </script>
 
 <template>
@@ -11,7 +24,7 @@ const active = ref(0);
       v-for="(item, index) in listBtn"
       :key="index"
       :class="`iconfont ${item} ${active === index ? 'active' : ''}`"
-      @click="active = index" />
+      @click="jumpToPage(index)" />
   </nav>
 </template>
 
@@ -19,7 +32,7 @@ const active = ref(0);
 @use '~@/assets/scss/utils';
 
 nav {
-  height: 96px;
+  flex-shrink: 0;
   display: flex;
   align-items: stretch;
   justify-content: space-around;

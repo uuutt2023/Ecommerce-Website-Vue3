@@ -1,8 +1,7 @@
 import { createStore } from 'vuex';
 import { compressOneLayerOfObjects } from '@/assets/js/util';
-import _fromPairs from 'lodash/fromPairs';
-import _set from 'lodash/set';
-import _foreach from 'lodash/forEach';
+
+import { fromPairs, set, forEach } from 'lodash';
 
 const store = createStore({
   state: {
@@ -27,8 +26,8 @@ const store = createStore({
     setUserInfo(state, user) {
       state.user = user;
     },
-    setData(state, data) {
-      _foreach(compressOneLayerOfObjects(data), (val, key) => _set(state, key, val));
+    loadLocalData(state, data) {
+      forEach(compressOneLayerOfObjects(data), (val, key) => set(state, key, val));
     },
   },
 
@@ -37,7 +36,7 @@ const store = createStore({
       const { username } = state.user;
       let list = state.userFavorites[username] ?? [];
       list.push(favoriteId);
-      commit('setListFavorite', _fromPairs([[username, list]]));
+      commit('setListFavorite', fromPairs([[username, list]]));
     },
   },
 });

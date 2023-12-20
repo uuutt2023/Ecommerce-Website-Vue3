@@ -143,10 +143,6 @@ function toggleFavorite(card) {
 }
 
 .container-fluid {
-  flex-grow: 1;
-  @extend %none-scrollBar;
-  scroll-snap-type: y mandatory;
-
   header {
     top: 0;
   }

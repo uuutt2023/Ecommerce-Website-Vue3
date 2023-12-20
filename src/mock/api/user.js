@@ -1,5 +1,6 @@
 import userJson from '@/mock/node/userInfo.json';
 import axios from 'axios';
+import { find, isEqual, isEmpty } from 'lodash';
 
 export const GetAll = [{ name: 'userInfo', url: '/api/user', path: '/api/user' }];
 
@@ -9,17 +10,17 @@ export const ChangePwd = [
     type: 'post',
     url: '/api/user/changePwd',
     path: '/api/user/changePwd',
-    todo: (req) => {
+    todo: async (req) => {
       const { username, password } = JSON.parse(req?.body);
       // 判断账号是否存在
-      let findAcc = [...userJson.data.userinfo].find((u) => u.username === username);
-      if (findAcc) {
-        findAcc.password = password;
-        userJson.data.userinfo[username] = findAcc;
-        axios.put('/api/user', userJson).then((resp) => console.log(resp));
+      let hasAccount = find(userJson.data.userinfo, (user) => isEqual(user.username, username));
+      if (hasAccount) {
+        hasAccount.password = password;
+        userJson.data.userinfo[username] = hasAccount;
+        await axios.put('/api/user', userJson);
       }
       return {
-        result: findAcc ? 'success' : 'error',
+        result: !isEmpty(hasAccount) ? 'success' : 'error',
       };
     },
   },
@@ -34,22 +35,22 @@ export const SignUp = [
     type: 'post',
     url: '/api/user/signUp',
     path: '/api/user/signUp',
-    todo: (req) => {
+    todo: async (req) => {
       const { username } = JSON.parse(req?.body);
       // 避免重复注册
-      if ([...userJson.data.userinfo].find((u) => u.username === username)) {
+      const isSignUp = find(userJson.data.userinfo, (user) => isEqual(user.name, username));
+      if (isSignUp) {
         return {
           result: 'error',
         };
       }
-
       const newUserJson = Object.assign(
         JSON.parse(req?.body),
         { roles: 'user' },
         { name: username },
       );
       userJson.data.userinfo = [...userJson.data.userinfo, newUserJson];
-      axios.put('/api/user', userJson).then((resp) => console.log(resp));
+      await axios.put('/api/user', userJson);
       return {
         result: 'success',
       };
@@ -72,16 +73,17 @@ export const SignIn = [
      * @param {String} req.body 表单数据（字符串
      * */
     todo: (req) => {
-      const { username, password } = JSON.parse(req?.body);
+      const data = JSON.parse(req?.body);
       // 登录信息判断
-      const loginInfo = Array(...userJson.data.userinfo).find(
-        (u) => u.username === username && u.password === password,
-      );
+      const loginInfo = find(userJson.data.userinfo, (user) => isEqual(data, user));
+      // const loginInfo = Array(...userJson.data.userinfo).find(
+      //   (u) => u.username === username && u.password === password,
+      // );
       return {
         result: loginInfo != null ? 'success' : 'error',
         data: {
           user: {
-            username: loginInfo?.username || username,
+            username: loginInfo?.username || data.username,
             permissions: loginInfo?.permissions || null,
           },
         },

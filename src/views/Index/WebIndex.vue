@@ -1,7 +1,10 @@
 <script setup>
 import { i18n, setI18nLanguage } from '@/i18n';
 import { ref } from 'vue';
-import { vuexDataSaveIntoBrowser } from '@/assets/js/util';
+import { prefixLocal, vuexDataSaveIntoBrowser } from '@/assets/js/local';
+import { useCookie } from 'vue-cookie-next';
+import { isEmpty } from 'lodash';
+import router from '@/router';
 
 const isEnglish = ref(i18n.global.locale?.value === 'en');
 function changeLang() {
@@ -11,6 +14,12 @@ function changeLang() {
 
 // Vuex 保存与读取 浏览器本地存储
 vuexDataSaveIntoBrowser();
+
+// 扫描cookie
+const cookie = useCookie().getCookie(`${prefixLocal.toLocaleLowerCase()}-user`);
+if (!isEmpty(cookie)) {
+  router.push(`/${cookie.permissions}`);
+}
 </script>
 
 <template>
@@ -59,9 +68,6 @@ vuexDataSaveIntoBrowser();
   }
 }
 
-a {
-}
-
 .i18n-click {
   /* 切换语言 */
   background-color: #ea4d8a !important;
@@ -85,10 +91,7 @@ a {
 
   font-size: 24px;
 
-  $list:
-    [ 'vue',
-    'i18n',
-    'mock'];
+  $list: 'vue', 'i18n', 'mock';
 
   &:after {
     display: block;

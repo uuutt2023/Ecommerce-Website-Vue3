@@ -1,16 +1,14 @@
 <script setup>
 import { nextTick, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-
 import * as Ysp from 'yup';
 import { getRoute } from '@/router';
 import { veeLabel, veeRules } from '@/assets/js/rules';
 import { Form } from 'vee-validate';
 import VeeField from '@/components/VeeField.vue';
-
 import { onSignIn } from '@/assets/js/submit';
-import _eq from 'lodash/eq';
-import _isEmpty from 'lodash/isEmpty';
+
+import { eq, isEmpty } from 'lodash';
 
 const { t } = useI18n();
 const form = ref({
@@ -57,7 +55,7 @@ const toast = ref({
   },
   // 路由url参数
   route = getRoute(),
-  isShowToast = ref(!_isEmpty(route?.query?.show));
+  isShowToast = ref(!isEmpty(route?.query?.show));
 // 当前组件渲染完成时
 nextTick(() => {
   const showId = route?.query?.show ?? null;
@@ -72,7 +70,7 @@ nextTick(() => {
     leave-active-class="animate__animated animate__fadeOut">
     <div
       v-show="isShowToast"
-      :class="{ 'bg-danger text-white': _eq(+route.query.show, 2) }"
+      :class="{ 'bg-danger text-white': eq(+route.query.show, 2) }"
       aria-atomic="true"
       aria-live="assertive"
       class="toast show">

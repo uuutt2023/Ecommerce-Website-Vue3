@@ -3,7 +3,7 @@ import store from '@/store';
 import _isEmpty from 'lodash/isEmpty';
 import _eq from 'lodash/eq';
 
-const index = [
+const Web = [
   {
     path: '/',
     redirect: '/index',
@@ -48,16 +48,34 @@ const index = [
     redirect: '/user/home',
     children: [
       {
-        path: 'home',
-        name: 'home',
-        component: () => import('@/views/user/components/UserHome.vue'),
-        meta: { title: '猫猫主页', keepAlice: true },
-      },
-      {
         path: 'detail',
         name: 'detail',
         component: () => import('@/views/user/components/BaseDetail.vue'),
-        meta: { title: '详情页' },
+        meta: { title: '详情页', noBottomBar: true },
+      },
+      {
+        path: 'home',
+        name: 'home',
+        component: () => import('@/views/user/components/UserHome.vue'),
+        meta: { title: '主页', keepAlice: true },
+      },
+      {
+        path: 'profile',
+        name: 'profile',
+        component: () => import('@/views/user/components/UserProfile.vue'),
+        meta: { title: '个人页面' },
+      },
+      {
+        path: 'categories',
+        name: 'categories',
+        component: () => import('@/views/user/components/UserCategories.vue'),
+        meta: { title: '分类' },
+      },
+      {
+        path: 'favorites',
+        name: 'favorites',
+        component: () => import('@/views/user/components/UserFavorites.vue'),
+        meta: { title: '收藏' },
       },
     ],
   },
@@ -65,7 +83,7 @@ const index = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: [...index],
+  routes: [...Web],
 });
 
 router.beforeEach(
