@@ -1,13 +1,16 @@
 <script setup>
 import { i18n, setI18nLanguage } from '@/i18n';
-import { ref } from 'vue'; // 引用组件
+import { ref } from 'vue';
+import { vuexDataSaveIntoBrowser } from '@/assets/js/util';
 
 const isEnglish = ref(i18n.global.locale?.value === 'en');
-
 function changeLang() {
   // 切换语言
   setI18nLanguage(isEnglish.value ? 'zh-CN' : 'en');
 }
+
+// Vuex 保存与读取 浏览器本地存储
+vuexDataSaveIntoBrowser();
 </script>
 
 <template>
@@ -19,7 +22,9 @@ function changeLang() {
         <small>{{ $t('logo.title.small') }}</small>
       </h1>
     </header>
-    <RouterView />
+    <section class="position-relative">
+      <RouterView />
+    </section>
     <footer class="row justify-content-between">
       <p class="col-12 text-center">{{ $t('msg.skill') }}</p>
       <i class="border border-1 iconfont icon-vue col-2" />
