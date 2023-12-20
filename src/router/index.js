@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory, useRoute } from 'vue-router';
 import store from '@/store';
+import _isEmpty from 'lodash/isEmpty';
+import _eq from 'lodash/eq';
 
 const index = [
   {
@@ -36,31 +38,25 @@ const index = [
     path: '/admin',
     name: 'admin',
     component: () => import('@/views/admin/WebAdmin.vue'),
-    meta: { title: '后台管理' },
+    meta: { title: '后台管理', reqPermissions: 'admin' },
   },
   {
     path: '/user',
     name: 'user',
     component: () => import('@/views/user/WebUser.vue'),
-    meta: { title: '首页' },
+    meta: { reqPermissions: 'user' },
     redirect: '/user/home',
     children: [
       {
         path: 'home',
         name: 'home',
         component: () => import('@/views/user/components/UserHome.vue'),
-        meta: { title: '猫猫主页' },
+        meta: { title: '猫猫主页', keepAlice: true },
       },
-    ],
-  },
-  {
-    path: '/detail',
-    name: 'detail',
-    children: [
       {
-        path: 'cat',
-        name: 'cat',
-        component: () => import('@/views/user/components/CatDetail.vue'),
+        path: 'detail',
+        name: 'detail',
+        component: () => import('@/views/user/components/BaseDetail.vue'),
         meta: { title: '详情页' },
       },
     ],
@@ -72,13 +68,41 @@ const router = createRouter({
   routes: [...index],
 });
 
-// 路由跳转 - 修改标题，撤销加载动画
-router.beforeEach((to, from, next) => {
-  if (to.meta?.title && to.meta.title) {
-    document.title = to.meta.title;
-  }
+router.beforeEach(
+  /**
+   * 路由跳转 - 权限判断
+   * @param {Object} to 目标地址
+   * @param {Object} to.meta 目标数据
+   * @param from
+   * @param next
+   * */
+  function (to, from, next) {
+    const requiredPermissions = to.meta.reqPermissions; // 路由配置中定义的所需权限
+    const userPermissions = store.state.user.permissions; // 从 Vuex 中获取用户权限
+    // 路由没有配置权限
+    if (_isEmpty(requiredPermissions)) {
+      next();
+      return;
+    }
+    // 检查用户是否具有所需权限
+    const hasPermission = _eq(requiredPermissions, userPermissions);
+    if (hasPermission) {
+      // 用户具有所需权限，允许访问路由
+      next();
+    } else {
+      // 用户没有所需权限，重定向到其他页面或显示提示信息
+      next('/index/signIn?show=2');
+    }
+  },
+);
+
+router.beforeEach(function (to, from, next) {
+  const { title } = to.meta;
+  // 标题修改
+  document.title = title ?? '';
   // 取消动画
-  store.dispatch('setLoading', false).then(() => next());
+  store.commit('setLoading', false);
+  next();
 });
 
 export default router;
