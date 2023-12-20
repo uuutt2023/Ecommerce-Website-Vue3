@@ -1,31 +1,53 @@
-<script setup></script>
+<script setup>
+import router from '@/router';
+
+defineProps({
+  canBack: {
+    type: Boolean,
+    default: () => true,
+  },
+});
+
+const jumpBack = () => router.back();
+</script>
 
 <template>
-  <header>
+  <header class="row d-flex flex-column px-4">
     <div
       id="bar"
-      class="row d-flex justify-content-between align-items-center">
-      <div class="col">
-        <slot name="left" />
+      class="col-12">
+      <div class="col-1 p-0">
+        <i
+          v-if="canBack"
+          class="iconfont icon-back"
+          @click="jumpBack" />
       </div>
-      <div class="col">
-        <slot name="title" />
+      <div
+        id="topBar-title"
+        class="col-auto p-0">
+        <h5 class="m-0 text-center">{{ $route.meta?.title }}</h5>
       </div>
-      <div class="col d-inline-flex justify-content-end">
+      <div class="col-auto p-0 d-inline-flex justify-content-end">
         <slot name="right" />
       </div>
     </div>
-    <div class="title row mb-2">
+    <div
+      id="topBar-section"
+      class="col-12">
       <slot name="section" />
     </div>
   </header>
+  <hr class="mb-0 mt-1" />
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 #bar {
-  height: 48px;
+  height: 56px;
   position: sticky;
   top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 header {
@@ -34,7 +56,20 @@ header {
   flex-direction: column;
 }
 
-.title {
-  height: 56px;
+#topBar-section {
+  max-height: 56px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#topBar-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.iconfont {
+  font-size: 26px;
 }
 </style>
