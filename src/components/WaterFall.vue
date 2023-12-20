@@ -1,9 +1,10 @@
 <script setup>
 import { nextTick, ref } from 'vue';
-import router from '@/router';
 import axios from 'axios';
 import _sampleSize from 'lodash/sampleSize';
 import _throttle from 'lodash/throttle';
+import router from '@/router';
+import store from '@/store';
 
 const { url, clickUrl, count } = defineProps({
   url: {
@@ -44,7 +45,7 @@ async function refreshListImages() {
   }
 }
 
-getListImages();
+listRender.value?.length > 0 || getListImages();
 
 /**
  * 加载图标出现在视窗时
@@ -58,19 +59,6 @@ const options = {
   threshold: 0.5, // 元素可见度的阈值，这里设置为50%
 };
 
-const observer = new IntersectionObserver((entries, observer) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      const image = entry.target;
-      const src = image.getAttribute('data-src');
-      image.setAttribute('src', src);
-      observer.unobserve(image);
-    }
-  });
-}, options);
-
-listRender.value.forEach((img) => observer.observe(img));
-
 nextTick(() => {
   new IntersectionObserver(
     () => canLoading.value && !isTouch.value && getListImages(),
@@ -78,13 +66,22 @@ nextTick(() => {
   ).observe(footerLoading.value); // 底部加载图标出现时
   new IntersectionObserver(refreshListImages, options).observe(headerLoading.value); // 顶部加载出现时全部重置
 });
+
+/**
+ * 点击爱心收藏
+ * @param {Object} card 卡片对象
+ * */
+function toggleFavorite(card) {
+  card.isActive = !card.isActive;
+  store.dispatch('addUserFavorite', card.id);
+}
 </script>
 
 <template>
   <div
     class="container-fluid position-relative"
     @touchend="isTouch = false"
-    @touchstart="isTouch = true">
+    @touchstart.passive="isTouch = true">
     <header class="position-absolute start-0 w-100 text-center">
       <i
         v-show="canLoading && listRender.length > 0"
@@ -101,7 +98,7 @@ nextTick(() => {
         v-show="item.url"
         :key="item.id"
         v-masonry-tile
-        class="card m-2 mx-md-1"
+        class="card m-2 my-3 mx-md-1"
         @click="jumpToDetail(item.id)">
         <div class="card-img-top">
           <img
@@ -111,6 +108,10 @@ nextTick(() => {
         </div>
         <div class="card-body py-2">
           <p class="card-title m-0">{{ item.title }}</p>
+          <i
+            :class="item.isActive ? 'icon-like-fill' : 'icon-like'"
+            class="iconfont btn-like me-2"
+            @click.stop="toggleFavorite(item)" />
         </div>
       </div>
     </section>
@@ -130,15 +131,19 @@ nextTick(() => {
 
 .card {
   width: 160px;
+  position: relative;
 }
 
 .card-img-top img {
   width: 160px;
 }
 
+.icon-like-fill {
+  color: #ff671c !important;
+}
+
 .container-fluid {
   flex-grow: 1;
-  border-top: 2px solid #e6e6e7;
   @extend %none-scrollBar;
   scroll-snap-type: y mandatory;
 
@@ -163,5 +168,13 @@ nextTick(() => {
     display: block;
     height: 10vh; /* 调整额外滑动区域的高度 */
   }
+}
+
+.btn-like {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  color: #d0d0d0;
+  display: inline-block;
 }
 </style>
