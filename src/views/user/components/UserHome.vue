@@ -5,11 +5,7 @@ import BottomBar from '@/components/BottomBar.vue';
 </script>
 
 <template>
-  <TopBar>
-    <template #left>
-      <i class="iconfont icon-back" />
-    </template>
-    <template #title></template>
+  <TopBar :can-back="false">
     <template #right>
       <i class="iconfont icon-set-up me-3" />
       <i class="iconfont icon-search" />
@@ -27,10 +23,9 @@ import BottomBar from '@/components/BottomBar.vue';
   </TopBar>
 
   <WaterFall
-    :click-url="'/detail/cat'"
+    :click-url="'/user/detail'"
     :count="6"
     :url="'/api/card/list'" />
-
   <BottomBar />
 </template>
 
@@ -58,9 +53,5 @@ h1 {
     line-height: 18px;
     text-align: left;
   }
-}
-
-.iconfont {
-  font-size: 24px;
 }
 </style>
