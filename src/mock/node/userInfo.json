@@ -5,20 +5,20 @@
       {
         "username": "admin",
         "password": "123456",
-        "roles": "admin",
+        "permissions": "admin",
         "name": "张三"
       },
       {
         "username": "uuutt",
         "password": "123456",
-        "roles": "user",
-        "name": "测试1"
+        "permissions": "user",
+        "name": "uuutt"
       },
       {
-        "username": "@word(3, 5)",
+        "username": "demo",
         "password": "123456",
-        "roles": "user",
-        "name": "@cname"
+        "permissions": "user",
+        "name": "测试名字"
       }
     ]
   }
