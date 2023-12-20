@@ -1,5 +1,5 @@
 <script setup>
-import { nextTick, reactive, ref } from 'vue';
+import { nextTick, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import * as Ysp from 'yup';
@@ -9,6 +9,8 @@ import { Form } from 'vee-validate';
 import VeeField from '@/components/VeeField.vue';
 
 import { onSignIn } from '@/assets/js/submit';
+import _eq from 'lodash/eq';
+import _isEmpty from 'lodash/isEmpty';
 
 const { t } = useI18n();
 const form = ref({
@@ -28,41 +30,64 @@ const schema = Ysp.object({
 });
 
 // 弹窗提示
-const toast = reactive({
-  newUser: false, // 新用户
-  changePwd: false, // 密码修改
-});
-const toastMap = {
-  0: () => (toast.newUser = true),
-  1: () => (toast.changePwd = true),
-  2: () => (toast.changePwd = toast.newUser = false),
-};
-const route = getRoute();
+const toast = ref({
+    title: '',
+    msg: '',
+  }),
+  // 提示映射
+  toastMap = {
+    close: () => {
+      isShowToast.value = false;
+    },
+    0: () =>
+      (toast.value = {
+        title: '欢迎新用户',
+        msg: '请您重新输入账号与密码',
+      }),
+    1: () =>
+      (toast.value = {
+        title: '修改提醒',
+        msg: '密码已修改成功',
+      }),
+    2: () =>
+      (toast.value = {
+        title: '权限不足',
+        msg: '请您先登录在访问该网站哦~',
+      }),
+  },
+  // 路由url参数
+  route = getRoute(),
+  isShowToast = ref(!_isEmpty(route?.query?.show));
 // 当前组件渲染完成时
 nextTick(() => {
-  toastMap[route?.query?.show ?? 2]();
+  const showId = route?.query?.show ?? null;
+  showId && toastMap[showId]();
 });
 </script>
 
 <template>
   <!-- 弹窗提示 -->
-  <Transition
+  <transition
     enter-active-class="animate__animated animate__fadeIn"
     leave-active-class="animate__animated animate__fadeOut">
     <div
-      v-show="route?.query?.show"
+      v-show="isShowToast"
+      :class="{ 'bg-danger text-white': _eq(+route.query.show, 2) }"
+      aria-atomic="true"
+      aria-live="assertive"
       class="toast show">
       <div class="toast-header">
-        <strong class="me-auto">欢迎新用户~</strong>
+        <strong class="me-auto">{{ toast.title }}~</strong>
         <button
           class="btn-close m-0"
-          data-bs-dismiss="toast"
           type="button"
-          @click="toastMap[2]()" />
+          @click="toastMap['close']()" />
       </div>
-      <div class="toast-body">请您重新输入账号和密码。</div>
+      <div class="toast-body">
+        <small>{{ toast.msg }}</small>
+      </div>
     </div>
-  </Transition>
+  </transition>
 
   <Form
     :validation-schema="schema"
@@ -88,3 +113,10 @@ nextTick(() => {
     </VeeField>
   </Form>
 </template>
+
+<style lang="scss" scoped>
+.toast {
+  position: absolute;
+  top: -50%;
+}
+</style>
