@@ -15,16 +15,13 @@ files.keys().forEach((key) => {
   }
 });
 
-// console.log(mockPaths); // 所有mock信息
-
 // 存储mock地址
-store.dispatch('setMockPath', mockPaths).then(() =>
-  mockPaths.map((item) => {
-    // 自动注册mock
-    if (item?.todo instanceof Function) {
-      Mock.mock(item.url, item?.type, item.todo);
-    } else {
-      Mock.mock(item.url, item?.type, require(`./node/${item.name}.json`));
-    }
-  }),
-);
+store.commit('setMockPath', mockPaths);
+mockPaths.map((item) => {
+  // 自动注册mock
+  if (item?.todo instanceof Function) {
+    Mock.mock(item.url, item?.type, item.todo);
+  } else {
+    Mock.mock(item.url, item?.type, require(`./node/${item.name}.json`));
+  }
+});

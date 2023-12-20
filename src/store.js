@@ -1,25 +1,43 @@
 import { createStore } from 'vuex';
+import { compressOneLayerOfObjects } from '@/assets/js/util';
+import _fromPairs from 'lodash/fromPairs';
+import _set from 'lodash/set';
+import _foreach from 'lodash/forEach';
 
 const store = createStore({
   state: {
     mockPath: [],
     isLoading: false,
+    userFavorites: {},
+    user: {
+      username: '',
+      permissions: '',
+    },
   },
   mutations: {
-    mockPath(state, val) {
+    setMockPath(state, val) {
       state.mockPath = val;
     },
-    isLoading(state, bool) {
+    setLoading(state, bool) {
       state.isLoading = bool;
+    },
+    setListFavorite(state, listFavorite) {
+      state.userFavorites = listFavorite;
+    },
+    setUserInfo(state, user) {
+      state.user = user;
+    },
+    setData(state, data) {
+      _foreach(compressOneLayerOfObjects(data), (val, key) => _set(state, key, val));
     },
   },
 
   actions: {
-    setMockPath({ commit }, fn) {
-      commit('mockPath', fn);
-    },
-    setLoading({ commit }, bool) {
-      commit('isLoading', bool);
+    addUserFavorite({ state, commit }, favoriteId) {
+      const { username } = state.user;
+      let list = state.userFavorites[username] ?? [];
+      list.push(favoriteId);
+      commit('setListFavorite', _fromPairs([[username, list]]));
     },
   },
 });

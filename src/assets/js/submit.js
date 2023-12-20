@@ -10,14 +10,16 @@ import router from '@/router';
  * */
 const submitPost = async ({ url, data }, callback) => {
   // 加载动画显示
-  await store.dispatch('setLoading', true);
-  const resp = await axios.post(url, data, {
+  store.commit('setLoading', true);
+  // 请求头配置
+  const options = {
     headers: {
       'Content-Type': 'application/json',
     },
-  });
+  };
+  const resp = await axios.post(url, data, options);
   callback(resp);
-  await store.dispatch('setLoading', false);
+  store.commit('setLoading', false);
 };
 
 /**
@@ -35,8 +37,10 @@ export async function onSignIn(values, actions) {
         pwd: '用户名或密码错误',
       });
     } else {
-      // 跳转首页
-      router.push(`/${data.data.roles}`);
+      const { user } = data.data;
+      // 登录成功
+      store.commit('setUserInfo', user);
+      router.push(`/${user.permissions}`);
     }
   });
 }
