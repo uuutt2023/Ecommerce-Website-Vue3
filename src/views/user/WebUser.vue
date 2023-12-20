@@ -2,7 +2,11 @@
 
 <template>
   <main>
-    <RouterView />
+    <router-view v-slot="{ Component }">
+      <keep-alive include="UserHome">
+        <component :is="Component" />
+      </keep-alive>
+    </router-view>
   </main>
 </template>
 
@@ -12,14 +16,9 @@
 main {
   height: 100%;
   @extend %flex-column;
-
-  & > * {
-    padding: 0 20px;
-  }
 }
 
 .iconfont {
   font-size: 22px;
-  width: 24px;
 }
 </style>
