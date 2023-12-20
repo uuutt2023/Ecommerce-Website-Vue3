@@ -80,10 +80,13 @@ export const SignIn = [
       return {
         result: loginInfo != null ? 'success' : 'error',
         data: {
-          username: loginInfo?.username || username,
-          roles: loginInfo?.roles || null,
+          user: {
+            username: loginInfo?.username || username,
+            permissions: loginInfo?.permissions || null,
+          },
         },
       };
+      // End
     },
   },
 ];
