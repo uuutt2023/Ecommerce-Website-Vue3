@@ -34,7 +34,7 @@ nextTick(async () => {
   <!-- 顶部栏 -->
   <TopBar />
   <!-- 页面获取数据 -->
-  <div>{{ catDetail.title }}</div>
+  <div class="container-fluid">{{ catDetail.title }}</div>
 </template>
 
 <style lang="scss" scoped></style>

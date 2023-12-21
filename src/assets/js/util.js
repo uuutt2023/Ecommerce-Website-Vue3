@@ -1,4 +1,5 @@
-import { flatMapDeep, isObject, mapKeys } from 'lodash';
+import { flatMapDeep, isObject, mapKeys, indexOf } from 'lodash';
+import store from '@/store';
 
 /**
  * 获取当前 URL 所有 GET 查询参数
@@ -26,3 +27,31 @@ export const compressOneLayerOfObjects = (data) =>
       isObject(value) ? mapKeys(value, (_innerValue, innerKey) => `${key}.${innerKey}`) : key,
     ),
   );
+
+import router from '@/router';
+
+/**
+ * 点击跳转详情页
+ * @param {number} id
+ */
+export function jumpToDetail(url, id) {
+  router.push(`${url}?id=${id}`);
+}
+
+/**
+ * 重复对象插入特定key值
+ * @param {Object} list 原对象
+ * @return {Object} 标识重复的对象数组（对象内插入新值isActive
+ */
+export function checkValueInterpolation(list) {
+  const current = [...(store.getters.currentUserFavorites ?? [])];
+  if (current) {
+    const _ = require('lodash'),
+      filterList = _(list)
+        .filter(({ id }) => indexOf(current, id) != -1)
+        .map((item) => ({ ...item, isActive: true }))
+        .value();
+    return _.assign(list, filterList);
+  }
+  return list;
+}

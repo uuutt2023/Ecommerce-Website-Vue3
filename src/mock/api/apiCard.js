@@ -1,9 +1,10 @@
 import catImgJson from '@/mock/node/catImg.json';
 import cardInfoJson from '@/mock/node/cardInfo.json';
 import { getUrlQueryParams } from '@/assets/js/util';
+import { filter, some, isEqual } from 'lodash';
 
 const catImg = catImgJson.data,
-  { cardInfo } = cardInfoJson.data;
+  cardInfo = cardInfoJson.data;
 
 const catInfo = cardInfo.map((item, index) => ({ ...item, ...catImg[index] }));
 
@@ -18,7 +19,7 @@ const catInfo = cardInfo.map((item, index) => ({ ...item, ...catImg[index] }));
 /**
  * 卡片缩略图渲染
  * */
-export const GetListCardList = [
+export const getListCardList = [
   {
     name: 'cardInfo',
     type: 'get',
@@ -38,7 +39,7 @@ export const GetListCardList = [
 /**
  * 详情页信息
  * */
-export const GetCardDetail = [
+export const getCardDetail = [
   {
     name: 'cardDetail',
     type: 'get',
@@ -47,6 +48,23 @@ export const GetCardDetail = [
     todo: () => {
       const { id } = getUrlQueryParams();
       return catInfo.find((item) => item.id === id);
+    },
+  },
+];
+
+export const getListFavoritesById = [
+  {
+    name: 'favorites',
+    type: 'post',
+    url: /\/api\/card\/favorites/,
+    path: '/api/card/favorites',
+    todo: (req) => {
+      let { list } = JSON.parse(req.body);
+      const data = filter(catInfo, (card) => some(list, (id) => isEqual(card.id, id)));
+      return {
+        result: 'success',
+        data: data,
+      };
     },
   },
 ];

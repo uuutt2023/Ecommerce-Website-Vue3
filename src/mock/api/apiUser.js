@@ -75,7 +75,10 @@ export const SignIn = [
     todo: (req) => {
       const data = JSON.parse(req?.body);
       // 登录信息判断
-      const loginInfo = find(userJson.data.userinfo, (user) => isEqual(data, user));
+      const loginInfo = find(userJson.data.userinfo, ({ username, password }) =>
+        isEqual(data, { username, password }),
+      );
+      console.log(loginInfo);
       // const loginInfo = Array(...userJson.data.userinfo).find(
       //   (u) => u.username === username && u.password === password,
       // );

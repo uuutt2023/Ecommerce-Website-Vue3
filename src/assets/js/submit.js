@@ -31,6 +31,7 @@ export async function onSignIn(values, actions) {
     data: { username: values.act, password: values.pwd },
   };
   await submitPost(options, ({ data }) => {
+    console.log(data);
     if (data.result === 'error') {
       actions.setErrors({
         act: '用户名或密码错误',

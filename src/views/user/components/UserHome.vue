@@ -23,7 +23,8 @@ import WaterFall from '@/components/WaterFall.vue';
   <WaterFall
     :click-url="'/user/detail'"
     :count="6"
-    :url="'/api/card/list'" />
+    :url="'/api/card/list'"
+    :width="'160px'" />
 </template>
 
 <style lang="scss" scoped>

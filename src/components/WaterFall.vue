@@ -1,12 +1,16 @@
 <script setup>
 import { nextTick, ref } from 'vue';
 import axios from 'axios';
-import _sampleSize from 'lodash/sampleSize';
-import _throttle from 'lodash/throttle';
-import router from '@/router';
+import { sampleSize, throttle, isEmpty } from 'lodash';
 import store from '@/store';
 
-const { url, clickUrl, count } = defineProps({
+import { jumpToDetail, checkValueInterpolation } from '@/assets/js/util';
+
+const { url, clickUrl, count, width } = defineProps({
+  width: {
+    type: String,
+    default: () => '',
+  },
   url: {
     type: String,
     default: () => '',
@@ -26,17 +30,21 @@ const listRender = ref([]),
   canLoading = ref(false),
   isTouch = ref(false);
 
-function jumpToDetail(id) {
-  // 点击跳转详情
-  router.push(`${clickUrl}?id=${id}`);
-}
-
-const getListImages = _throttle(async () => {
-  const info = (await axios.get(url)).data;
-  listRender.value.push(..._sampleSize(info, count));
-  canLoading.value = true;
+/**
+ * 请求列表数据
+ */
+const getListImages = throttle(async () => {
+  if (!isEmpty(url)) {
+    // 用户已点亮的爱心恢复
+    const info = checkValueInterpolation((await axios.get(url)).data, 'isActive');
+    listRender.value.push(...sampleSize(info, count));
+    canLoading.value = true;
+  }
 }, 600);
 
+/**
+ * 下拉刷新图片
+ */
 async function refreshListImages() {
   if (canLoading.value && !isTouch.value) {
     canLoading.value = false;
@@ -72,8 +80,9 @@ nextTick(() => {
  * @param {Object} card 卡片对象
  * */
 function toggleFavorite(card) {
+  // 提交收藏状态到Vuex中
+  store.dispatch(card.isActive ? 'removeUserFavorite' : 'addUserFavorite', card.id);
   card.isActive = !card.isActive;
-  store.dispatch('addUserFavorite', card.id);
 }
 </script>
 
@@ -98,8 +107,9 @@ function toggleFavorite(card) {
         v-show="item.url"
         :key="item.id"
         v-masonry-tile
-        class="card m-2 my-3 mx-md-1"
-        @click="jumpToDetail(item.id)">
+        :style="{ width: width }"
+        class="card my-3 mx-2"
+        @click="jumpToDetail(clickUrl, item.id)">
         <div class="card-img-top">
           <img
             :src="item.url"
@@ -130,12 +140,11 @@ function toggleFavorite(card) {
 @use '~@/assets/scss/utils';
 
 .card {
-  width: 160px;
   position: relative;
-}
 
-.card-img-top img {
-  width: 160px;
+  .img-thumbnail {
+    width: 100%;
+  }
 }
 
 .icon-like-fill {
