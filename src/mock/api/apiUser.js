@@ -8,16 +8,16 @@ export const ChangePwd = [
   {
     name: 'changePwd',
     type: 'post',
-    url: '/api/user/changePwd',
+    url: /api\/user\/changePwd/,
     path: '/api/user/changePwd',
-    todo: async (req) => {
+    todo: (req) => {
       const { username, password } = JSON.parse(req?.body);
       // 判断账号是否存在
       let hasAccount = find(userJson.data.userinfo, (user) => isEqual(user.username, username));
       if (hasAccount) {
         hasAccount.password = password;
         userJson.data.userinfo[username] = hasAccount;
-        await axios.put('/api/user', userJson);
+        axios.put('/api/user', userJson);
       }
       return {
         result: !isEmpty(hasAccount) ? 'success' : 'error',
@@ -33,9 +33,9 @@ export const SignUp = [
   {
     name: 'signUp',
     type: 'post',
-    url: '/api/user/signUp',
+    url: /\/api\/user\/signUp/,
     path: '/api/user/signUp',
-    todo: async (req) => {
+    todo: (req) => {
       const { username } = JSON.parse(req?.body);
       // 避免重复注册
       const isSignUp = find(userJson.data.userinfo, (user) => isEqual(user.name, username));
@@ -46,11 +46,12 @@ export const SignUp = [
       }
       const newUserJson = Object.assign(
         JSON.parse(req?.body),
-        { roles: 'user' },
+        { permissions: 'user' },
         { name: username },
       );
       userJson.data.userinfo = [...userJson.data.userinfo, newUserJson];
-      await axios.put('/api/user', userJson);
+      console.log(userJson);
+      axios.put('/api/user', userJson);
       return {
         result: 'success',
       };

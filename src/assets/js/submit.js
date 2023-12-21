@@ -18,6 +18,7 @@ const submitPost = async ({ url, data }, callback) => {
     },
   };
   const resp = await axios.post(url, data, options);
+  console.log(resp);
   callback(resp);
   store.commit('setLoading', false);
 };
@@ -78,13 +79,15 @@ export async function onSignUp(values, actions) {
     },
   };
   await submitPost(options, ({ data }) => {
-    if (data.result === 'error') {
-      actions.setErrors({
-        act: '该账号已注册，请重新输入',
-      });
-    } else {
-      // 跳转首页
-      router.push('/index/signIn?show=0');
+    if (data) {
+      if (data.result === 'error') {
+        actions.setErrors({
+          act: '该账号已注册，请重新输入',
+        });
+      } else {
+        // 跳转首页
+        router.push('/index/signIn?show=0');
+      }
     }
   });
 }

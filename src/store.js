@@ -1,7 +1,7 @@
 import { createStore } from 'vuex';
 import { compressOneLayerOfObjects } from '@/assets/js/util';
 
-import { fromPairs, set, forEach } from 'lodash';
+import { fromPairs, set, forEach, assign } from 'lodash';
 import _ from 'lodash';
 
 const store = createStore({
@@ -23,7 +23,10 @@ const store = createStore({
       state.isLoading = bool;
     },
     setListFavorite(state, listFavorite) {
-      state.userFavorites = fromPairs([[state.user.username, listFavorite]]);
+      state.userFavorites = assign(
+        fromPairs([[state.user.username, listFavorite]]),
+        state.userFavorites,
+      );
     },
     setUserInfo(state, user) {
       state.user = user;
