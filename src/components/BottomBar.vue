@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import router from '@/router';
-import store from '@/store';
+import store from '@/store/store';
 
 const listBtn = ['icon-home-fill', 'icon-more-fill', 'icon-like-fill', 'icon-me'];
 const tabState = ref(store.state.tabState);

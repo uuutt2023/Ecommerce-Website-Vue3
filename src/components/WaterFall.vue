@@ -1,10 +1,9 @@
+<!-- eslint-disable no-unused-vars -->
 <script setup>
 import { nextTick, ref } from 'vue';
 import axios from 'axios';
-import { sampleSize, throttle, isEmpty } from 'lodash';
-import store from '@/store';
-
-import { jumpToDetail, checkValueInterpolation } from '@/assets/js/util';
+import { isEmpty, sampleSize, throttle, unionBy } from 'lodash';
+import { checkValueInterpolation, jumpToDetail, toggleFavorite } from '@/assets/js/util';
 
 const { url, clickUrl, count, width } = defineProps({
   width: {
@@ -37,7 +36,8 @@ const getListImages = throttle(async () => {
   if (!isEmpty(url)) {
     // 用户已点亮的爱心恢复
     const info = checkValueInterpolation((await axios.get(url)).data, 'isActive');
-    listRender.value.push(...sampleSize(info, count));
+    const randomCard = sampleSize(info, count);
+    listRender.value = unionBy([...listRender.value], randomCard, 'id');
     canLoading.value = true;
   }
 }, 600);
@@ -45,11 +45,11 @@ const getListImages = throttle(async () => {
 /**
  * 下拉刷新图片
  */
-async function refreshListImages() {
+function refreshListImages() {
   if (canLoading.value && !isTouch.value) {
     canLoading.value = false;
     listRender.value = [];
-    await getListImages();
+    getListImages();
   }
 }
 
@@ -74,16 +74,6 @@ nextTick(() => {
   ).observe(footerLoading.value); // 底部加载图标出现时
   new IntersectionObserver(refreshListImages, options).observe(headerLoading.value); // 顶部加载出现时全部重置
 });
-
-/**
- * 点击爱心收藏
- * @param {Object} card 卡片对象
- * */
-function toggleFavorite(card) {
-  // 提交收藏状态到Vuex中
-  store.dispatch(card.isActive ? 'removeUserFavorite' : 'addUserFavorite', card.id);
-  card.isActive = !card.isActive;
-}
 </script>
 
 <template>

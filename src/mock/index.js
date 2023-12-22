@@ -1,5 +1,5 @@
 import Mock from 'mockjs';
-import store from '@/store';
+import store from '@/store/store';
 
 const mockPaths = [];
 

@@ -1,4 +1,4 @@
-import { i18n } from '@/i18n';
+import { i18n } from '@/lang/i18n';
 import * as Ysp from 'yup';
 
 const { t } = i18n.global;

@@ -4,11 +4,13 @@ import App from './App.vue';
 // Vue 路由
 import router from './router';
 // VueX
-import store from './store';
+import store from './store/store';
 // Mock.js 模拟数据接口
 import '@/mock/index';
 // Cookies 库
 import { VueCookieNext } from 'vue-cookie-next';
+// 国际化整合
+import { i18n } from '@/lang/i18n';
 
 // BootStrap 5
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -17,8 +19,6 @@ import 'bootstrap/dist/js/bootstrap.bundle';
 import 'animate.css';
 // 图标库
 import '@/assets/icon/iconfont.css';
-// 国际化整合
-import { i18n } from '@/i18n';
 // 瀑布流布局
 import { VueMasonryPlugin } from 'vue-masonry';
 

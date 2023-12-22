@@ -1,21 +1,15 @@
 <script setup>
 import TopBarVue from '@/components/TopBar.vue';
-
+import { jumpToDetail, toggleFavorite } from '@/assets/js/util';
 import { post } from '@/http';
-import store from '@/store';
-import { find, isEqual } from 'lodash';
+import store from '@/store/store';
 import { ref } from 'vue';
-import { jumpToDetail } from '@/assets/js/util';
-// 获取当前用户名
-const { username } = store.state.user;
 
-const listFavoritesId = find(store.state.userFavorites, (_val, key) => isEqual(key, username));
+// * 渲染列表请求
 const listRender = ref([]);
 post('/api/card/favorites', {
-  list: listFavoritesId,
-}).then(({ data }) => {
-  listRender.value = data;
-});
+  list: store.getters.currentUserFavorites,
+}).then(({ data }) => (listRender.value = data));
 </script>
 
 <template>
@@ -37,9 +31,9 @@ post('/api/card/favorites', {
       <div class="card-body py-2">
         <p class="card-title m-0">{{ item.title }}</p>
         <i
-          @click.stop="item.isActive = !item.isActive"
-          :class="item.isActive ? 'icon-like' : 'icon-like-fill'"
-          class="iconfont btn-like me-2" />
+          :class="!item.isActive ? 'icon-like-fill' : 'icon-like'"
+          class="iconfont btn-like me-2"
+          @click.stop="toggleFavorite(item)" />
       </div>
     </div>
   </section>

@@ -1,9 +1,10 @@
 <script setup>
 import { prefixLocal } from '@/assets/js/local';
-import store from '@/store';
+import store from '@/store/store';
 import { useCookie } from 'vue-cookie-next';
 import BottomBar from '@/components/BottomBar.vue';
 
+// 自动登录 Cookie验证
 const cookie = useCookie();
 cookie.setCookie(`${prefixLocal.toLocaleLowerCase()}-user`, store.state.user);
 </script>
@@ -16,8 +17,8 @@ cookie.setCookie(`${prefixLocal.toLocaleLowerCase()}-user`, store.state.user);
       </keep-alive>
     </router-view>
     <BottomBar
-      class="bottomNav"
-      v-if="!$route.meta.noBottomBar" />
+      v-if="!$route.meta.noBottomBar"
+      class="bottomNav" />
   </main>
 </template>
 

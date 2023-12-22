@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, useRoute } from 'vue-router';
-import store from '@/store';
+import store from '@/store/store';
 import _isEmpty from 'lodash/isEmpty';
 import _eq from 'lodash/eq';
 

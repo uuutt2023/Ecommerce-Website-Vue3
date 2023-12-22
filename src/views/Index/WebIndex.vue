@@ -1,5 +1,5 @@
 <script setup>
-import { i18n, setI18nLanguage } from '@/i18n';
+import { i18n, setI18nLanguage } from '@/lang/i18n';
 import { ref } from 'vue';
 import { prefixLocal, vuexDataSaveIntoBrowser } from '@/assets/js/local';
 import { useCookie } from 'vue-cookie-next';
@@ -31,9 +31,11 @@ if (!isEmpty(cookie)) {
         <small>{{ $t('logo.title.small') }}</small>
       </h1>
     </header>
+
     <section class="position-relative">
       <RouterView />
     </section>
+
     <footer class="row justify-content-between">
       <p class="col-12 text-center">{{ $t('msg.skill') }}</p>
       <i class="border border-1 iconfont icon-vue col-2" />

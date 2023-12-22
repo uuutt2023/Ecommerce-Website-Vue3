@@ -1,7 +1,7 @@
 <script setup>
 import { Field } from 'vee-validate';
 import { ref, watchEffect } from 'vue';
-import store from '@/store';
+import store from '@/store/store';
 
 // 接收父参数
 const { modelValue } = defineProps({

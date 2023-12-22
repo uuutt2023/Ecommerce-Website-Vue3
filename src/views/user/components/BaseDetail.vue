@@ -1,7 +1,7 @@
 <script setup>
-import axios from 'axios';
 import { nextTick, ref } from 'vue';
 import TopBar from '@/components/TopBar.vue';
+import axios from 'axios';
 
 // 详情页数据
 let catDetail = ref({
@@ -23,8 +23,8 @@ let catDetail = ref({
 
 nextTick(async () => {
   // 请求后端获取数据
-  const resp = await axios.get(`/api/detail/cat${location.search}`);
-  catDetail.value = resp.data;
+  const { data } = await axios.get(`/api/detail/cat${location.search}`);
+  catDetail.value = data;
   // 数据获取
   console.log(catDetail.value.animal);
 });

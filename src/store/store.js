@@ -17,25 +17,30 @@ const store = createStore({
   },
   mutations: {
     setMockPath(state, val) {
+      // 路由配置
       state.mockPath = val;
     },
     setLoading(state, bool) {
+      // 加载状态
       state.isLoading = bool;
     },
     setListFavorite(state, listFavorite) {
+      // 用户收藏
       state.userFavorites = assign(
         fromPairs([[state.user.username, listFavorite]]),
         state.userFavorites,
       );
     },
     setUserInfo(state, user) {
+      // 当前用户
       state.user = user;
     },
     loadLocalData(state, data) {
-      console.log(compressOneLayerOfObjects(data));
+      // 读取浏览器数据
       forEach(compressOneLayerOfObjects(data), (val, key) => set(state, key, val));
     },
     setTabState(state, num) {
+      // 用户主页底部TAB栏状态
       state.tabState = num;
     },
   },
@@ -44,6 +49,7 @@ const store = createStore({
     addUserFavorite({ getters, commit }, favoriteId) {
       commit(
         'setListFavorite',
+        // 用户操作：添加收藏
         _(getters.currentUserFavorites ?? [])
           .push(favoriteId)
           .uniq()
@@ -54,6 +60,7 @@ const store = createStore({
     removeUserFavorite({ getters, commit }, favoriteId) {
       commit(
         'setListFavorite',
+        // 用户操作：移除收藏
         _(getters.currentUserFavorites ?? [])
           .filter((item) => item != favoriteId)
           .value(),
@@ -62,6 +69,7 @@ const store = createStore({
   },
 
   getters: {
+    // 获取当前登录用户的收藏
     currentUserFavorites: (state) => state.userFavorites[state.user.username],
   },
 });

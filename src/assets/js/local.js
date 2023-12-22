@@ -1,4 +1,4 @@
-import store from '@/store';
+import store from '@/store/store';
 import { pick, throttle } from 'lodash';
 
 export const prefixLocal = 'WEBAPP-CAT';

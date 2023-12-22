@@ -1,5 +1,6 @@
-import { flatMapDeep, isObject, mapKeys, indexOf } from 'lodash';
-import store from '@/store';
+import { flatMapDeep, indexOf, isObject, mapKeys } from 'lodash';
+import store from '@/store/store';
+import router from '@/router';
 
 /**
  * 获取当前 URL 所有 GET 查询参数
@@ -28,8 +29,6 @@ export const compressOneLayerOfObjects = (data) =>
     ),
   );
 
-import router from '@/router';
-
 /**
  * 点击跳转详情页
  * @param {number} id
@@ -54,4 +53,15 @@ export function checkValueInterpolation(list) {
     return _.assign(list, filterList);
   }
   return list;
+}
+
+/**
+ * 点击爱心收藏
+ * @param {Object} card 卡片对象
+ * */
+export function toggleFavorite(card) {
+  console.log(card.isActive);
+  // 提交收藏状态到Vuex中
+  store.dispatch(card.isActive ? 'removeUserFavorite' : 'addUserFavorite', card.id);
+  card.isActive = !card.isActive;
 }

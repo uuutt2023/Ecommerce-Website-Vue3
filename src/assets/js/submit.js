@@ -1,4 +1,4 @@
-import store from '@/store';
+import store from '@/store/store';
 import axios from 'axios';
 import router from '@/router';
 

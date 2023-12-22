@@ -1,6 +1,6 @@
 <script setup>
 import { nextTick, ref, watch } from 'vue';
-import { i18n } from '@/i18n';
+import { i18n } from '@/lang/i18n';
 
 const isRouterAlive = ref(true);
 /**
