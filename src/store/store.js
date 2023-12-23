@@ -1,8 +1,8 @@
+/* eslint-disable no-unused-vars */
 import { createStore } from 'vuex';
-import { compressOneLayerOfObjects } from '@/assets/js/util';
+import { flattenObjet } from '@/assets/js/util';
 
-import { fromPairs, set, forEach, assign } from 'lodash';
-import _ from 'lodash';
+import _, { concat, flow, uniq } from 'lodash';
 
 const store = createStore({
   state: {
@@ -26,8 +26,8 @@ const store = createStore({
     },
     setListFavorite(state, listFavorite) {
       // 用户收藏
-      state.userFavorites = assign(
-        fromPairs([[state.user.username, listFavorite]]),
+      state.userFavorites = _.assign(
+        _.fromPairs([[state.user.username, listFavorite]]),
         state.userFavorites,
       );
     },
@@ -37,7 +37,7 @@ const store = createStore({
     },
     loadLocalData(state, data) {
       // 读取浏览器数据
-      forEach(compressOneLayerOfObjects(data), (val, key) => set(state, key, val));
+      _.forEach(flattenObjet(data), (val, key) => _.set(state, key, val));
     },
     setTabState(state, num) {
       // 用户主页底部TAB栏状态
@@ -47,23 +47,14 @@ const store = createStore({
 
   actions: {
     addUserFavorite({ getters, commit }, favoriteId) {
-      commit(
-        'setListFavorite',
-        // 用户操作：添加收藏
-        _(getters.currentUserFavorites ?? [])
-          .push(favoriteId)
-          .uniq()
-          .value(),
-      );
+      commit('setListFavorite', flow(concat, uniq)(getters.currentUserFavorites ?? [], favoriteId));
     },
 
     removeUserFavorite({ getters, commit }, favoriteId) {
       commit(
         'setListFavorite',
         // 用户操作：移除收藏
-        _(getters.currentUserFavorites ?? [])
-          .filter((item) => item != favoriteId)
-          .value(),
+        _.filter(getters.currentUserFavorites ?? [], (item) => item != favoriteId),
       );
     },
   },
