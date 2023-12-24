@@ -23,7 +23,7 @@ const updateValue = (newValue) => {
   // 提交更新
   emits('update:modelValue', newValue);
 };
-watchEffect(() => {
+watchEffect(() => {~
   // 监听 localValue 的变化，一旦发生变化，更新父组件的 modelValue
   updateValue(localValue.value);
 });
