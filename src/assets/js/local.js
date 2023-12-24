@@ -1,5 +1,5 @@
 import store from '@/store/store';
-import { pick, throttle } from 'lodash';
+import { pick } from 'lodash';
 
 export const prefixLocal = 'WEBAPP-CAT';
 
@@ -17,9 +17,7 @@ export const vuexDataSaveIntoBrowser = () => {
     localStorage.setItem(`${prefixLocal}-DATA`, JSON.stringify(data));
   });
 
-  return throttle(() => {
-    // 从浏览器中获取保存的字符串数据
-    const savedData = localStorage.getItem(`${prefixLocal}-DATA`);
-    savedData && store.commit('loadLocalData', JSON.parse(savedData));
-  }, 5000)();
+  // 从浏览器中获取保存的字符串数据
+  const savedData = localStorage.getItem(`${prefixLocal}-DATA`);
+  savedData && store.commit('loadLocalData', JSON.parse(savedData));
 };

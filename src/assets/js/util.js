@@ -1,4 +1,4 @@
-import { flatMapDeep, indexOf, isObject, mapKeys } from 'lodash';
+import _ from 'lodash';
 import store from '@/store/store';
 import router from '@/router';
 
@@ -22,12 +22,13 @@ export const getUrlQueryParams = (url = location.search) =>
  * @param {Object} data 两层及以上的对象
  * @return {Object} 展开后的一层对象
  * */
-export const compressOneLayerOfObjects = (data) =>
-  Object.assign(
-    ...flatMapDeep(data, (value, key) =>
-      isObject(value) ? mapKeys(value, (_innerValue, innerKey) => `${key}.${innerKey}`) : key,
-    ),
+export const flattenObjet = (data) => {
+  console.log(data);
+  return _.transform(
+    data,
+    (result, value, key) => (result[key] = _.isObject(value) ? flattenObjet(value) : value),
   );
+};
 
 /**
  * 点击跳转详情页
@@ -47,7 +48,7 @@ export function checkValueInterpolation(list) {
   if (current) {
     const _ = require('lodash'),
       filterList = _(list)
-        .filter(({ id }) => indexOf(current, id) != -1)
+        .filter(({ id }) => _.indexOf(current, id) != -1)
         .map((item) => ({ ...item, isActive: true }))
         .value();
     return _.assign(list, filterList);
@@ -60,7 +61,6 @@ export function checkValueInterpolation(list) {
  * @param {Object} card 卡片对象
  * */
 export function toggleFavorite(card) {
-  console.log(card.isActive);
   // 提交收藏状态到Vuex中
   store.dispatch(card.isActive ? 'removeUserFavorite' : 'addUserFavorite', card.id);
   card.isActive = !card.isActive;

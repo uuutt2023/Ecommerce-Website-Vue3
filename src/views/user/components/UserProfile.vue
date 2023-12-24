@@ -1,105 +1,171 @@
 <script setup>
-import TopBarVue from '@/components/TopBar.vue';
+const imgUrl = [
+  require('@/assets/images/img/01.png'),
+  require('@/assets/images/img/02.png'),
+  require('@/assets/images/img/03.png'),
+];
 </script>
 
 <template>
-  <TopBarVue/>
-  <div class="container-fluid">
-    <!-- module1指右上角扫一扫按钮跟设置按钮 -->
-    <div class="module1">
-      <button type="button" class="mui-btn1">
-        <i class="iconfont icon-saoyisao"></i>
-      </button>
-      <button type="button" class="mui-btn2">
-        <i class="iconfont icon-shezhi"></i>
-      </button>
-
-    </div>
+  <div class="container-fluid p-0">
     <!-- 我的信息 -->
-    <div id="myInfo">
+    <div class="row mt-4 align-items-center">
       <!-- 头像框图片 -->
-     <img src="https://fastly.picsum.photos/id/676/200/200.jpg?hmac=hgeMQEIK4Mn27Q2oLRWjXo1rgxwTbk1CnJE954h_HyM" alt="">
-    <h1 class="myName">我的名称：林北</h1>  
-    <h1 class="myHobby">我的爱好：喜欢猫猫</h1>  
-    </div>
-    <!-- module2指收藏，浏览记录等 -->
-    <div id="module2">
-    <h1 class="commonFunction">常用功能</h1>
-   
-   <a href="#">书签</a> 
-   <a href="#">历史</a>
-   <a href="#">下载</a>
-   <a href="#">关注</a>
-  
-    </div>
-    <!-- module3指的是常用功能 -->
-    <div class="module3">
-      <a href="#">日照模式</a>
-      <a href="#">无痕浏览</a>
-      <a href="#">网页无图</a>
-      <a href="#">退出</a>
-    </div>
-    <!-- 猫猫图片 -->
-    <div class="module4">
-      <h1 class="cat1">
-        <img src="https://cdn2.thecatapi.com/images/1au.gif" alt="">
-      </h1>
-      <h1 class="cat2">
-        <img src="https://cdn2.thecatapi.com/images/4l1.gif">
-      </h1>
-    </div>
-    <!-- module5指我的消息.我的小说.积分中心.我的游戏 -->
-    <div class="module5">
-      <div class="myNew">
-        <a href="#">我的消息</a>
-        <i class="iconfont icon-xiaoxizhongxin"></i>
-      </div>
-      <div class="myNovel">
-        <a href="#">我的小说</a>
-        <i class="iconfont icon-tubiao1shuxiaoshuo"></i>
-      </div>
-      <div class="integralCenter">
-        <a href="#">积分中心</a>
-        <i class="iconfont icon-jifen"></i>
-      </div>
-      <div class="myGame">
-        <a href="#">我的游戏</a>
-        <i class="iconfont icon-youxiyouxiji"></i>
+      <img
+        alt="头像图片"
+        class="col-3 rounded-circle ms-3"
+        src="https://picsum.photos/200" />
+      <div class="col-auto">
+        <p class="h3 d-inline-block">林北</p>
+        <p class="small mb-0 text-secondary">猫猫~我的最爱</p>
       </div>
     </div>
 
+    <span
+      class="row py-1 mt-4"
+      style="background: rgb(246, 246, 246)"></span>
+
+    <div class="row row-cols-4 text-center">
+      <!-- module2指收藏，浏览记录等 -->
+      <p class="btn btn-outline-secondary border-0 col p-3 m-0">
+        <i class="iconfont icon-book" />
+        <br />
+        <small>书签</small>
+      </p>
+      <p class="btn btn-outline-secondary border-0 col p-3 m-0">
+        <i class="iconfont icon-history" />
+        <br />
+        <small>历史</small>
+      </p>
+      <p class="btn btn-outline-secondary border-0 col p-3 m-0">
+        <i class="iconfont icon-download" />
+        <br />
+        <small>下载</small>
+      </p>
+      <p class="btn btn-outline-secondary border-0 col p-3 m-0">
+        <i class="iconfont icon-focus" />
+        <br />
+        <small>关注</small>
+      </p>
+    </div>
+
+    <span
+      class="row py-1"
+      style="background: rgb(246, 246, 246)"></span>
+
+    <!-- 轮播猫猫图 -->
+
+    <div
+      id="cat-img"
+      class="carousel slide py-2"
+      data-bs-ride="carousel">
+      <!-- 指示符 -->
+      <div class="carousel-indicators">
+        <button
+          class="active"
+          data-bs-slide-to="0"
+          data-bs-target="#cat-img"
+          type="button" />
+        <button
+          data-bs-slide-to="1"
+          data-bs-target="#cat-img"
+          type="button" />
+        <button
+          data-bs-slide-to="2"
+          data-bs-target="#cat-img"
+          type="button" />
+      </div>
+
+      <!-- 轮播图片 -->
+      <div class="carousel-inner">
+        <div
+          v-for="(img, index) in imgUrl"
+          :key="index"
+          :class="{ active: index === 0 }"
+          class="carousel-item">
+          <img
+            :src="img"
+            alt="轮播图{{index}}"
+            class="d-block w-100" />
+        </div>
+      </div>
+
+      <!-- 左右切换按钮 -->
+      <button
+        class="carousel-control-prev"
+        data-bs-slide="prev"
+        data-bs-target="#cat-img"
+        type="button">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button
+        class="carousel-control-next"
+        data-bs-slide="next"
+        data-bs-target="#cat-img"
+        type="button">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
+
+    <span
+      class="row py-1"
+      style="background: rgb(246, 246, 246)"></span>
+
+    <div class="row row-cols-4 text-center mt-auto">
+      <!-- module3指的是常用功能 -->
+      <p class="btn btn-outline-secondary border-0 col p-3 m-0">
+        <i class="iconfont icon-night-day" />
+        <br />
+        <small>白天</small>
+      </p>
+      <p class="btn btn-outline-secondary border-0 col p-3 m-0">
+        <i class="iconfont icon-i18n" />
+        <br />
+        <small>中转英</small>
+      </p>
+      <p class="btn btn-outline-secondary border-0 col p-3 m-0">
+        <i class="iconfont icon-set-up" />
+        <br />
+        <small>设置</small>
+      </p>
+      <p class="btn btn-outline-secondary border-0 col p-3 m-0">
+        <i class="iconfont icon-exit" />
+        <br />
+        <small>退出</small>
+      </p>
+    </div>
   </div>
-  
-  
 </template>
 
 <style>
-a{
+a {
   text-decoration: none;
   color: #000;
 }
-.module1{
-margin-top: 5px;
-position: relative;
-height: 50px;
-}
-.mui-btn1{
-position: absolute;
-top: 10%;
-left: 80%;
-background: white;
-border: none;
 
+.module1 {
+  margin-top: 5px;
+  position: relative;
+  height: 50px;
 }
-.mui-btn2{
+
+.mui-btn1 {
   position: absolute;
-top: 10%;
-left: 90%;
-background: white;
-border: none;
+  top: 10%;
+  left: 80%;
+  background: white;
+  border: none;
 }
 
-#myInfo{
+.mui-btn2 {
+  position: absolute;
+  top: 10%;
+  left: 90%;
+  background: white;
+  border: none;
+}
+
+#myInfo {
   margin-top: 5px;
   /* 父元素相对定位 */
   position: relative;
@@ -108,40 +174,42 @@ border: none;
   /* background-color: antiquewhite; */
 }
 
-#myInfo img{
- width: 100px;
- height: 100px; 
- border-radius: 50%;
-  
+#myInfo img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
 }
-.myName{
-/* 子元素绝对定位 */
-position: absolute;
-top: 10%;
-left: 30%;
-font-size: 20px;
+
+.myName {
+  /* 子元素绝对定位 */
+  position: absolute;
+  top: 10%;
+  left: 30%;
+  font-size: 20px;
 }
-.myHobby{
+
+.myHobby {
   position: absolute;
   top: 40%;
   left: 30%;
   font-size: 15px;
 }
-#module2{
+
+#module2 {
   position: relative;
   /* background-color: aquamarine; */
   /* 内边距 */
   margin-top: 50px;
   padding-top: 30px;
   display: flex;
-  justify-content:space-around ;
+  justify-content: space-around;
   align-items: center;
   height: 80px;
   border-radius: 10px;
   /* background-color: rgb(244, 244, 244); */
-
 }
-.commonFunction{
+
+.commonFunction {
   position: absolute;
   top: 0;
   left: 0;
@@ -149,55 +217,60 @@ font-size: 20px;
   margin: 5px;
 }
 
-#module2 a{
+#module2 a {
   height: 20px;
   font-size: 20px;
   color: #000;
 }
-.module3{
+
+.module3 {
   margin: 5px 0;
   display: flex;
-  justify-content:space-around ;
+  justify-content: space-around;
   align-items: center;
   height: 100px;
   /* background-color: antiquewhite; */
   border-radius: 5px;
 }
-.module3 a{
+
+.module3 a {
   font-size: 20px;
   color: #000;
 }
-.module4{
+
+.module4 {
   position: relative;
   width: 100px;
   height: 100px;
 }
-.module4 .cat1 img{
+
+.module4 .cat1 img {
   position: absolute;
   top: auto;
   left: 20px;
   height: 100px;
 }
-.module4 .cat2 img{
+
+.module4 .cat2 img {
   position: absolute;
   top: auto;
   left: 220px;
   height: 100px;
 }
-.module5{
+
+.module5 {
   position: relative;
   margin: 5px 0;
   justify-content: space-evenly;
   background-color: rgb(244, 244, 244);
   display: flex;
-  justify-content:space-around ;
+  justify-content: space-around;
   align-items: center;
   height: 100px;
   border-radius: 5px;
 }
 
-
-.myNew{
+.myNew {
   position: absolute;
   width: 80px;
   text-align: center;
@@ -205,7 +278,8 @@ font-size: 20px;
   left: 4%;
   top: 20%;
 }
-.myNovel{
+
+.myNovel {
   position: absolute;
   width: 80px;
   text-align: center;
@@ -213,7 +287,8 @@ font-size: 20px;
   left: 27%;
   top: 20%;
 }
-.integralCenter{
+
+.integralCenter {
   position: absolute;
   width: 80px;
   text-align: center;
@@ -221,7 +296,8 @@ font-size: 20px;
   left: 50%;
   top: 20%;
 }
-.myGame{
+
+.myGame {
   position: absolute;
   width: 80px;
   text-align: center;
@@ -229,6 +305,4 @@ font-size: 20px;
   left: 73%;
   top: 20%;
 }
-
-
 </style>
