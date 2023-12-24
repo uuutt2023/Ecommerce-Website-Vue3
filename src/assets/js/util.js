@@ -32,10 +32,11 @@ export const flattenObjet = (data) => {
 
 /**
  * 点击跳转详情页
+ * @param url
  * @param {number} id
  */
-export function jumpToDetail(url, id) {
-  router.push(`${url}?id=${id}`);
+export async function jumpToDetail(url, id) {
+  await router.push(`${url}?id=${id}`);
 }
 
 /**
