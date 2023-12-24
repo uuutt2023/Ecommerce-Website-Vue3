@@ -48,7 +48,7 @@ export function checkValueInterpolation(list) {
   if (current) {
     const _ = require('lodash'),
       filterList = _(list)
-        .filter(({ id }) => _.indexOf(current, id) != -1)
+        .filter(({ id }) => _.indexOf(current, id) !== -1)
         .map((item) => ({ ...item, isActive: true }))
         .value();
     return _.assign(list, filterList);

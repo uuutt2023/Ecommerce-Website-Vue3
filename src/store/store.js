@@ -55,7 +55,7 @@ const store = createStore({
       commit(
         'setListFavorite',
         // 用户操作：移除收藏
-        filter(getters.currentUserFavorites ?? [], (item) => item != favoriteId),
+        filter(getters.currentUserFavorites ?? [], (item) => item !== favoriteId),
       );
     },
   },
