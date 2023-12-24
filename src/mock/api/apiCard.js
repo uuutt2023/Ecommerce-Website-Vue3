@@ -3,15 +3,15 @@ import cardInfoJson from '@/mock/node/cardInfo.json';
 import { getUrlQueryParams } from '@/assets/js/util';
 import { filter, some, isEqual } from 'lodash';
 
-const catImg = catImgJson.data,
+const userCatImg = catImgJson.data,
   cardInfo = cardInfoJson.data;
 
-const catInfo = cardInfo.map((item, index) => ({ ...item, ...catImg[index] }));
+const catInfo = cardInfo.map((item, index) => ({ ...item, ...userCatImg[index] }));
 
 /**
  * 图片预加载
  * */
-[...catImg].forEach(async (item) => {
+[...userCatImg].forEach(async (item) => {
   const img = new Image();
   img.src = item.url;
 });

@@ -114,6 +114,7 @@ nextTick(() => {
 
 <style lang="scss" scoped>
 .toast {
+  width: 100%;
   position: absolute;
   top: -50%;
 }

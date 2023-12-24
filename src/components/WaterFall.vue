@@ -37,7 +37,7 @@ const getListImages = throttle(async () => {
     // 用户已点亮的爱心恢复
     const info = checkValueInterpolation((await axios.get(url)).data, 'isActive');
     const randomCard = sampleSize(info, count);
-    listRender.value = unionBy([...listRender.value], randomCard, 'id');
+    listRender.value = unionBy([...listRender.value], randomCard, (item) => item.id);
     canLoading.value = true;
   }
 }, 600);
