@@ -20,18 +20,10 @@ export function post(url, data = {}) {
   });
 }
 
-export function get(url, params = {}) {
-  return new Promise((resolve, reject) => {
-    axios({
-      url: url,
-      methods: 'GET',
-      params: params,
-    })
-      .then((res) => {
-        resolve(res.data);
-      })
-      .catch((err) => {
-        reject(err.data);
-      });
-  });
-}
+export const get = async (url) =>
+  axios
+    .get(url)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.log(error);
+    });

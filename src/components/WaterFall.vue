@@ -1,9 +1,9 @@
 <!-- eslint-disable no-unused-vars -->
 <script setup>
 import { nextTick, ref } from 'vue';
-import axios from 'axios';
-import { isEmpty, sampleSize, throttle, unionBy } from 'lodash';
+import { flow, isEmpty, sampleSize, throttle, unionBy } from 'lodash';
 import { checkValueInterpolation, jumpToDetail, toggleFavorite } from '@/assets/js/util';
+import axios from 'axios';
 
 const { url, clickUrl, count, width } = defineProps({
   width: {
@@ -35,9 +35,11 @@ const listRender = ref([]),
 const getListImages = throttle(async () => {
   if (!isEmpty(url)) {
     // 用户已点亮的爱心恢复
-    const info = checkValueInterpolation((await axios.get(url)).data, 'isActive');
-    const randomCard = sampleSize(info, count);
-    listRender.value = unionBy([...listRender.value], randomCard, (item) => item.id);
+    listRender.value = flow(
+      checkValueInterpolation,
+      (list) => sampleSize(list, count),
+      (list) => unionBy([...listRender.value], list, (item) => item.id),
+    )((await axios.get(url)).data);
     canLoading.value = true;
   }
 }, 600);

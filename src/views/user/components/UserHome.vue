@@ -21,10 +21,10 @@ import WaterFall from '@/components/WaterFall.vue';
   </TopBar>
 
   <WaterFall
-    :click-url="'/user/detail'"
+    :click-url="'/user/home/detail'"
     :count="6"
     :url="'/api/card/list'"
-    :width="'160px'" />
+    :width="'165px'" />
 </template>
 
 <style lang="scss" scoped>

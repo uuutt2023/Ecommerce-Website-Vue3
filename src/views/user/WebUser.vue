@@ -12,7 +12,7 @@ cookie.setCookie(`${prefixLocal.toLocaleLowerCase()}-user`, store.state.user);
 <template>
   <main>
     <router-view v-slot="{ Component }">
-      <keep-alive include="UserHome">
+      <keep-alive :include="['UserHome', 'UserCategories']">
         <component :is="Component" />
       </keep-alive>
     </router-view>

@@ -48,22 +48,28 @@ const Web = [
     redirect: '/user/home',
     children: [
       {
-        path: 'detail',
+        path: 'home/detail',
         name: 'detail',
-        component: () => import('@/views/user/components/BaseDetail.vue'),
+        component: () => import('@/views/user/components/DetailHome.vue'),
         meta: { title: '详情页', noBottomBar: true, saveTabState: true },
       },
       {
         path: 'home',
         name: 'home',
         component: () => import('@/views/user/components/UserHome.vue'),
-        meta: { title: '主页', keepAlice: true, tabState: 0 },
+        meta: { title: '主页', tabState: 0 },
       },
       {
         path: 'categories',
         name: 'categories',
         component: () => import('@/views/user/components/UserCategories.vue'),
         meta: { title: '分类', tabState: 1 },
+      },
+      {
+        path: 'categories/detail',
+        name: 'categoriesDetail',
+        component: () => import('@/views/user/components/DetailCategories.vue'),
+        meta: { title: '品种介绍', noBottomBar: true, saveTabState: true },
       },
       {
         path: 'favorites',

@@ -1,20 +1,12 @@
 import catImgJson from '@/mock/node/catImg.json';
-import cardInfoJson from '@/mock/node/cardInfo.json';
+import homeCardJson from '@/mock/node/cardInfo.json';
 import { getUrlQueryParams } from '@/assets/js/util';
-import { filter, some, isEqual } from 'lodash';
+import { filter, flow, forEach, isEqual, map, sampleSize, some } from 'lodash';
 
-const userCatImg = catImgJson.data,
-  cardInfo = cardInfoJson.data;
-
-const catInfo = cardInfo.map((item, index) => ({ ...item, ...userCatImg[index] }));
-
-/**
- * 图片预加载
- * */
-[...userCatImg].forEach(async (item) => {
-  const img = new Image();
-  img.src = item.url;
-});
+const imageUrls = catImgJson.data; // 图片API地址
+const homeCard = homeCardJson.data; // 基本信息
+const catInfo = homeCard.map((card, index) => ({ ...card, ...imageUrls[index] })); // 基本信息 + 图片
+forEach(catInfo, async ({ url }) => (new Image().src = url)); // 图片预加载
 
 /**
  * 卡片缩略图渲染
@@ -34,8 +26,6 @@ export const getListCardList = [
   },
 ];
 
-// /\/api\/card\/info/
-
 /**
  * 详情页信息
  * */
@@ -52,6 +42,9 @@ export const getCardDetail = [
   },
 ];
 
+/**
+ * 获取收藏列表
+ * */
 export const getListFavoritesById = [
   {
     name: 'favorites',
@@ -60,11 +53,29 @@ export const getListFavoritesById = [
     path: '/api/card/favorites',
     todo: (req) => {
       let { list } = JSON.parse(req.body);
-      const data = filter(catInfo, (card) => some(list, (id) => isEqual(card.id, id)));
+      const data = filter(catInfo, (card) => some(list, (id) => isEqual(card?.id, id)));
       return {
         result: 'success',
         data: data,
       };
     },
+  },
+];
+
+/**
+ * 随机图片
+ * */
+export const randomListImagesOfCat = [
+  {
+    name: 'listImages',
+    type: 'get',
+    url: /\/api\/random\/img\/cat/,
+    path: '/api/random/img/cat',
+    todo: (res) =>
+      flow(
+        getUrlQueryParams,
+        ({ count }) => sampleSize(catImgJson.data, count),
+        (list) => map(list, (item) => item.url),
+      )(res.url),
   },
 ];

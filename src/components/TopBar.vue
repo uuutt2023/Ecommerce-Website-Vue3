@@ -35,7 +35,7 @@ const jumpBack = () => router.back();
       </div>
       <div
         id="topBar-section"
-        class="col-12">
+        class="col-12 p-0">
         <slot name="section" />
       </div>
     </header>
@@ -43,7 +43,7 @@ const jumpBack = () => router.back();
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 #bar {
   height: 56px;
   position: sticky;
@@ -60,10 +60,11 @@ header {
 }
 
 #topBar-section {
-  max-height: 56px;
+  min-height: 56px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 #topBar-title {
