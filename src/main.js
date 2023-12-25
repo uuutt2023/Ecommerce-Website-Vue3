@@ -1,11 +1,16 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 
-import router from './router'; // Vue 路由
-import store from './store/store'; // VueX
-import '@/mock/index'; // Mock.js 模拟数据接口
-import { VueCookieNext } from 'vue-cookie-next'; // Cookies 库
-import { i18n } from '@/lang/i18n'; // 国际化整合
+// Vue 路由
+import router from './router';
+// VueX
+import store from './store/store';
+// Mock.js 模拟数据接口
+import '@/mock/index';
+// Cookies 库
+import { VueCookieNext } from 'vue-cookie-next';
+// 国际化整合
+import { i18n } from '@/lang/i18n';
 
 // BootStrap 5
 import 'bootstrap/dist/css/bootstrap.min.css';

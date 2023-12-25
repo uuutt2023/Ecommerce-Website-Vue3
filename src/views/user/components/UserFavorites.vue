@@ -19,6 +19,7 @@ post('/api/card/favorites', {
       v-for="item in listRender"
       v-show="item.url"
       :key="item.id"
+      v-masonry-tile
       class="card my-3"
       @click="jumpToDetail('/user/detail', item.id)">
       <div class="card-img-top">

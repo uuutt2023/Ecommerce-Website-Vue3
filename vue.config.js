@@ -1,6 +1,4 @@
 const { defineConfig } = require('@vue/cli-service');
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
-
 module.exports = defineConfig({
   transpileDependencies: true,
 
@@ -14,9 +12,5 @@ module.exports = defineConfig({
       compositionOnly: false,
       fullInstall: true,
     },
-  },
-
-  chainWebpack: (config) => {
-    config.plugin('loadshReplace').use(new LodashModuleReplacementPlugin());
   },
 });

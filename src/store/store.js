@@ -1,7 +1,8 @@
-/* eslint-disable no-unused-vars */
 import { createStore } from 'vuex';
+import { compressOneLayerOfObjects } from '@/assets/js/util';
 
-import { assign, concat, filter, flow, uniq } from 'lodash';
+import { fromPairs, set, forEach, assign } from 'lodash';
+import _ from 'lodash';
 
 const store = createStore({
   state: {
@@ -25,20 +26,18 @@ const store = createStore({
     },
     setListFavorite(state, listFavorite) {
       // 用户收藏
-      const { user, userFavorites } = state;
-      state.userFavorites = flow(
-        (favorites) => [...favorites, ...listFavorite], // 解构整合：当前用户收藏数据、新增数据
-        uniq, // 去重
-        (newFavorites) => assign({ [user.username]: newFavorites }), // 添加用户名Key
-        (updatedFavorites) => assign(userFavorites, updatedFavorites), // 合并数据
-      )(userFavorites[user.username] || []);
+      state.userFavorites = assign(
+        fromPairs([[state.user.username, listFavorite]]),
+        state.userFavorites,
+      );
     },
     setUserInfo(state, user) {
       // 当前用户
       state.user = user;
     },
     loadLocalData(state, data) {
-      assign(state, data);
+      // 读取浏览器数据
+      forEach(compressOneLayerOfObjects(data), (val, key) => set(state, key, val));
     },
     setTabState(state, num) {
       // 用户主页底部TAB栏状态
@@ -48,21 +47,30 @@ const store = createStore({
 
   actions: {
     addUserFavorite({ getters, commit }, favoriteId) {
-      commit('setListFavorite', flow(concat, uniq)(getters.currentUserFavorites ?? [], favoriteId));
+      commit(
+        'setListFavorite',
+        // 用户操作：添加收藏
+        _(getters.currentUserFavorites ?? [])
+          .push(favoriteId)
+          .uniq()
+          .value(),
+      );
     },
 
     removeUserFavorite({ getters, commit }, favoriteId) {
       commit(
         'setListFavorite',
         // 用户操作：移除收藏
-        filter(getters.currentUserFavorites ?? [], (item) => item !== favoriteId),
+        _(getters.currentUserFavorites ?? [])
+          .filter((item) => item != favoriteId)
+          .value(),
       );
     },
   },
 
   getters: {
     // 获取当前登录用户的收藏
-    currentUserFavorites: (state) => [...state.userFavorites[state.user.username]],
+    currentUserFavorites: (state) => state.userFavorites[state.user.username],
   },
 });
 
