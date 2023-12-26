@@ -23,7 +23,7 @@ export const getUrlQueryParams = (url = location.search) =>
  * @return {Object} 展开后的一层对象
  * */
 export const flattenObjet = (data) => {
-  console.log(data);
+  // console.log(data);
   return transform(
     data,
     (result, value, key) => (result[key] = isObject(value) ? flattenObjet(value) : value),
@@ -33,7 +33,7 @@ export const flattenObjet = (data) => {
 /**
  * 点击跳转详情页
  * @param url
- * @param {number} id
+ * @param {number | String} id
  */
 export async function jumpToDetail(url, id) {
   await router.push(`${url}?id=${id}`);
