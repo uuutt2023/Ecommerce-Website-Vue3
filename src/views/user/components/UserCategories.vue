@@ -88,7 +88,7 @@ function onSearch() {
 </script>
 
 <template>
-  <TopBarVue>
+  <TopBarVue :can-back="false">
     <template #section>
       <form
         class="input-group my-1"

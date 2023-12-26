@@ -18,7 +18,6 @@ const submitPost = async ({ url, data }, callback) => {
     },
   };
   const resp = await axios.post(url, data, options);
-  console.log(resp);
   callback(resp);
   store.commit('setLoading', false);
 };

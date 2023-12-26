@@ -1,11 +1,11 @@
 <script setup>
 import { nextTick, reactive, ref } from 'vue';
-import { checkValueInterpolation } from '@/assets/js/util';
+import { checkValueInterpolation, toggleFavorite } from '@/assets/js/util';
 import TopBar from '@/components/TopBar.vue';
 import { get } from '@/http';
 
 // 详情页数据
-let catDetail = reactive({
+let detail = reactive({
   // 详情页基本数据
   id: 'xxx',
   title: '标题',
@@ -26,13 +26,12 @@ let catDetail = reactive({
 const imgUrl = ref([]);
 nextTick(async () => {
   // 请求后端获取数据
-  catDetail = await get(`/api/detail/cat${location.search}`);
-  imgUrl.value = [catDetail.url, ...(await get('/api/random/img/cat?count=4'))];
+  detail = await get(`/api/detail/cat${location.search}`);
+  imgUrl.value = [detail.url, ...(await get('/api/random/img/cat?count=4'))];
 });
 </script>
 
 <template>
-  <!-- <div class="container-fluid">{{ catDetail.title }}</div> -->
   <!-- 顶部栏 -->
   <TopBar />
   <div class="container-fluid p-0">
@@ -87,18 +86,18 @@ nextTick(async () => {
 
       <!-- 作者分享文案 -->
       <div class="mt-4">
-        <h4 class="fw-bold">{{ catDetail.title }}</h4>
+        <h4 class="fw-bold">{{ detail.title }}</h4>
         <p class="lh-lg">
-          {{ catDetail.description }}
+          {{ detail.description }}
           <small class="d-block text-end">12-07 上海</small>
         </p>
       </div>
     </header>
 
     <section>
-      <h5 class="d-block ps-3">共{{ catDetail.user_messages.length }}条评论</h5>
+      <h5 class="d-block ps-3">共{{ detail.user_messages.length }}条评论</h5>
       <article
-        v-for="(item, index) in catDetail.user_messages"
+        v-for="(item, index) in detail.user_messages"
         :key="index"
         class="my-4 px-3 pb-4 d-flex align-items-start border-1 border-bottom">
         <img
@@ -122,7 +121,8 @@ nextTick(async () => {
         placeholder="不发没关系，请继续友善哦~"
         type="text" />
       <i
-        :class="checkValueInterpolation(catDetail) ? 'icon-like-fill' : 'icon-like'"
+        @click="toggleFavorite()"
+        :class="checkValueInterpolation(detail) ? 'icon-like-fill' : 'icon-like'"
         class="iconfont col-1 p-0 ps-2 text-center" />
     </footer>
   </div>

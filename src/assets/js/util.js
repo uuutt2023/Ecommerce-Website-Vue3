@@ -20,7 +20,7 @@ export const getUrlQueryParams = (url = location.search) =>
 /**
  * 多层对象展开
  * @param {Object} data 两层及以上的对象
- * @return {Object} 展开后的一层对象
+ * @return {Array} 展开后的一层对象
  * */
 export const flattenObjet = (data) => {
   // console.log(data);

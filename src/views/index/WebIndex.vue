@@ -1,22 +1,16 @@
 <script setup>
-import { i18n, setI18nLanguage } from '@/lang/i18n';
-import { ref } from 'vue';
+import { switchLang, isEnglish } from '@/lang/i18n';
 import { prefixLocal, vuexDataSaveIntoBrowser } from '@/assets/js/local';
 import { useCookie } from 'vue-cookie-next';
 import { isEmpty } from 'lodash';
 import router from '@/router';
-
-const isEnglish = ref(i18n.global.locale?.value === 'en');
-function changeLang() {
-  // 切换语言
-  setI18nLanguage(isEnglish.value ? 'zh-CN' : 'en');
-}
 
 // Vuex 保存与读取 浏览器本地存储
 vuexDataSaveIntoBrowser();
 
 // 扫描cookie
 const cookie = useCookie().getCookie(`${prefixLocal.toLocaleLowerCase()}-user`);
+// TODO 判断用户数据是否有效
 if (!isEmpty(cookie)) {
   router.push(`/${cookie.permissions}`);
 }
@@ -41,9 +35,9 @@ if (!isEmpty(cookie)) {
       <i class="border border-1 iconfont icon-vue col-2" />
       <i class="border border-1 iconfont icon-mock col-2" />
       <i
-        :class="isEnglish && 'i18n-click'"
+        :class="isEnglish() && 'i18n-click'"
         class="border border-1 btn iconfont icon-i18n col-2"
-        @click="changeLang" />
+        @click="switchLang" />
     </footer>
   </div>
 </template>

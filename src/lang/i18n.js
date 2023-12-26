@@ -1,6 +1,7 @@
 import { createI18n } from 'vue-i18n';
 import zhCN from '@/lang/zh-CN.json';
 import en from '@/lang/en.json';
+import { isEqual } from 'lodash';
 
 export const i18n = createI18n({
   legacy: false,
@@ -13,11 +14,18 @@ export const i18n = createI18n({
   },
 });
 
+export const isEnglish = () => isEqual(i18n.global.locale?.value, 'en');
+
+/**
+ * 切换语言
+ * */
+export const switchLang = () => setI18nLanguage(isEnglish() ? 'zh-CN' : 'en');
+
 /**
  * 切换语言环境
  * @param {String} locale 国家语言缩写
  * */
-export function setI18nLanguage(locale) {
+function setI18nLanguage(locale) {
   if (i18n.mode === 'legacy') {
     i18n.global.locale = locale;
   } else {

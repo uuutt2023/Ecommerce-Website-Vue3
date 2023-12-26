@@ -13,7 +13,8 @@ post('/api/card/favorites', {
 </script>
 
 <template>
-  <TopBarVue />
+  <TopBarVue :can-back="false" />
+
   <section class="container-fluid position-relative">
     <div
       v-for="item in listRender"

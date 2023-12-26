@@ -1,9 +1,28 @@
 <script setup>
+import { useCookie } from 'vue-cookie-next';
+import { prefixLocal } from '@/assets/js/local';
+import { switchLang } from '@/lang/i18n';
+import router from '@/router';
+
 const imgUrl = [
   require('@/assets/images/user/01.png'),
   require('@/assets/images/user/02.png'),
   require('@/assets/images/user/03.png'),
 ];
+
+const cookie = useCookie();
+
+const fn = {
+  /**
+   * 移除Cookies，退出APP。
+   * */
+  exitApp: () => {
+    // 移除 cookies
+    cookie.removeCookie(`${prefixLocal.toLocaleLowerCase()}-user`);
+    router.push('/index');
+  },
+  switchLang: switchLang,
+};
 </script>
 
 <template>
@@ -58,6 +77,7 @@ const imgUrl = [
     <div
       id="cat-img"
       class="carousel slide py-2"
+      data-ride="carousel"
       data-bs-ride="carousel">
       <!-- 指示符 -->
       <div class="carousel-indicators">
@@ -118,7 +138,9 @@ const imgUrl = [
         <br />
         <small>白天</small>
       </p>
-      <p class="btn btn-outline-secondary border-0 col p-3 m-0">
+      <p
+        class="btn btn-outline-secondary border-0 col p-3 m-0"
+        @click="switchLang">
         <i class="iconfont icon-i18n" />
         <br />
         <small>中转英</small>
@@ -128,7 +150,9 @@ const imgUrl = [
         <br />
         <small>设置</small>
       </p>
-      <p class="btn btn-outline-secondary border-0 col p-3 m-0">
+      <p
+        class="btn btn-outline-secondary border-0 col p-3 m-0"
+        @click="fn.exitApp">
         <i class="iconfont icon-exit" />
         <br />
         <small>退出</small>
