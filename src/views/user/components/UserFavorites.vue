@@ -21,7 +21,7 @@ post('/api/card/favorites', {
       :key="item.id"
       v-masonry-tile
       class="card my-3"
-      @click="jumpToDetail('/user/detail', item.id)">
+      @click="jumpToDetail('/user/home/detail', item.id)">
       <div class="card-img-top">
         <img
           :src="item.url"
