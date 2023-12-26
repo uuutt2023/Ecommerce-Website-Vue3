@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4375927 */
-  src: url('iconfont.woff2?t=1702727351517') format('woff2'),
-  url('iconfont.woff?t=1702727351517') format('woff'),
-  url('iconfont.ttf?t=1702727351517') format('truetype');
+  src: url('iconfont.woff2?t=1703571662590') format('woff2'),
+       url('iconfont.woff?t=1703571662590') format('woff'),
+       url('iconfont.ttf?t=1703571662590') format('truetype');
 }
 
 .iconfont {
@@ -11,7 +11,54 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding: 0;
+}
+
+.icon-exit:before {
+  content: "\e7cb";
+}
+
+.icon-night-day:before {
+  content: "\e60a";
+}
+
+.icon-history:before {
+  content: "\e63b";
+}
+
+.icon-download:before {
+  content: "\e653";
+}
+
+.icon-focus:before {
+  content: "\e61f";
+}
+
+.icon-book:before {
+  content: "\e60d";
+}
+
+.icon-game:before {
+  content: "\e61e";
+}
+
+.icon-mark:before {
+  content: "\e673";
+}
+
+.icon-news:before {
+  content: "\e665";
+}
+
+.icon-remark:before {
+  content: "\e600";
+}
+
+.icon-favorite:before {
+  content: "\e698";
+}
+
+.icon-scanCode:before {
+  content: "\e62e";
 }
 
 .icon-search:before {
@@ -46,7 +93,7 @@
   content: "\e603";
 }
 
-.icon-cart-fill:before {
+.icon-cart:before {
   content: "\e601";
 }
 
