@@ -6,6 +6,10 @@ defineProps({
     type: Boolean,
     default: () => true,
   },
+  title: {
+    type: String,
+    default: () => '',
+  },
 });
 
 const jumpBack = () => router.back();
@@ -26,7 +30,7 @@ const jumpBack = () => router.back();
         <div
           id="topBar-title"
           class="col-auto p-0">
-          <h5 class="m-0 text-center">{{ $route.meta?.title }}</h5>
+          <h5 class="m-0 text-center">{{ title.length > 0 ? title : $route.meta?.title }}</h5>
         </div>
         <div class="col-auto p-0 d-inline-flex justify-content-end">
           <i class="iconfont icon-set-up" />
@@ -60,7 +64,6 @@ header {
 }
 
 #topBar-section {
-  min-height: 56px;
   display: flex;
   justify-content: space-between;
   align-items: center;
