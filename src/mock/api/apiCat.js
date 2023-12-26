@@ -1,5 +1,6 @@
 import catJson from '@/mock/node/cat.json';
-import { map, pick } from 'lodash';
+import { filter, flow, isEqual, map, pick } from 'lodash';
+import { getUrlQueryParams } from '@/assets/js/util';
 
 export const getCatInfo = [
   {
@@ -7,6 +8,20 @@ export const getCatInfo = [
     type: 'get',
     url: /\/api\/cat\/all/,
     path: '/api/cat/all',
+  },
+];
+
+export const getCatInfoByName = [
+  {
+    name: 'catInfoByName',
+    type: 'get',
+    url: /\/api\/cat\/info/,
+    path: '/api/cat/info',
+    todo: (req) =>
+      flow(
+        getUrlQueryParams,
+        ({ id }) => filter(catJson.data, (cat) => isEqual(cat.name, id)),
+      )(req.url),
   },
 ];
 

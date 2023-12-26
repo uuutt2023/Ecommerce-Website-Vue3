@@ -3,7 +3,7 @@ import TopBarVue from '@/components/TopBar.vue';
 import { nextTick, reactive, ref, watch } from 'vue';
 
 import { get } from '@/http';
-import { hashString, jumpToDetail } from '@/assets/js/util';
+import { jumpToDetail } from '@/assets/js/util';
 import BaseCategorized from '@/components/BaseCategorized.vue';
 
 import { filter, flow, isEqual, reduce, set, some, sortBy, toLower } from 'lodash';
@@ -91,7 +91,7 @@ function onSearch() {
   <TopBarVue>
     <template #section>
       <form
-        class="input-group mt-1"
+        class="input-group my-1"
         @submit.prevent="onSearch">
         <input
           v-model="searchTerm"
@@ -144,7 +144,7 @@ function onSearch() {
         v-show="!item?.canload"
         :key="index"
         class="col my-2"
-        @click="jumpToDetail('/user/categories/detail', hashString(item.name))">
+        @click="jumpToDetail('/user/categories/detail', item.name)">
         <div class="card-img-top">
           <img
             :src="item.avatar_src"
