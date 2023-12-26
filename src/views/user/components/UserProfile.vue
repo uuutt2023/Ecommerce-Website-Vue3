@@ -1,8 +1,8 @@
 <script setup>
 const imgUrl = [
-  require('@/assets/images/img/01.png'),
-  require('@/assets/images/img/02.png'),
-  require('@/assets/images/img/03.png'),
+  require('@/assets/images/user/01.png'),
+  require('@/assets/images/user/02.png'),
+  require('@/assets/images/user/03.png'),
 ];
 </script>
 

@@ -1,7 +1,5 @@
-import { data } from '@/mock/node/cat.json';
+import catJson from '@/mock/node/cat.json';
 import { map, pick } from 'lodash';
-
-console.log(data);
 
 export const getCatInfo = [
   {
@@ -19,7 +17,7 @@ export const getCatCard = [
     url: /\/api\/cat\/card/,
     path: '/api/cat/card',
     todo: () =>
-      map(data, (info) =>
+      map(catJson.data, (info) =>
         pick(info, ['nickname', 'cname', 'name', 'avatar_src', 'from', 'body_type', 'hair_length']),
       ),
   },

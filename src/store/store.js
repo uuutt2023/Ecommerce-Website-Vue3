@@ -1,5 +1,5 @@
 import { createStore } from 'vuex';
-import { compressOneLayerOfObjects } from '@/assets/js/util';
+import { flattenObjet } from '@/assets/js/util';
 
 import { fromPairs, set, forEach, assign } from 'lodash';
 import _ from 'lodash';
@@ -37,7 +37,7 @@ const store = createStore({
     },
     loadLocalData(state, data) {
       // 读取浏览器数据
-      forEach(compressOneLayerOfObjects(data), (val, key) => set(state, key, val));
+      forEach(flattenObjet(data), (val, key) => set(state, key, val));
     },
     setTabState(state, num) {
       // 用户主页底部TAB栏状态
@@ -62,7 +62,7 @@ const store = createStore({
         'setListFavorite',
         // 用户操作：移除收藏
         _(getters.currentUserFavorites ?? [])
-          .filter((item) => item != favoriteId)
+          .filter((item) => item !== favoriteId)
           .value(),
       );
     },
