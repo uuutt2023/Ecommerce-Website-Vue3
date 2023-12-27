@@ -1,11 +1,11 @@
 import catImgJson from '@/mock/node/catImg.json';
 import homeCardJson from '@/mock/node/cardInfo.json';
 import { getUrlQueryParams } from '@/assets/js/util';
-import { filter, flow, forEach, isEqual, map, sampleSize, some } from 'lodash';
+import { filter, flow, forEach, isEqual, map, sampleSize, some, unionBy, update } from 'lodash';
 
 const imageUrls = catImgJson.data; // 图片API地址
 const homeCard = homeCardJson.data; // 基本信息
-const catInfo = homeCard.map((card, index) => ({ ...card, ...imageUrls[index] })); // 基本信息 + 图片
+let catInfo = homeCard.map((card, index) => ({ ...card, ...imageUrls[index] })); // 基本信息 + 图片
 forEach(catInfo, async ({ url }) => (new Image().src = url)); // 图片预加载
 
 /**
@@ -53,11 +53,7 @@ export const getListFavoritesById = [
     path: '/api/card/favorites',
     todo: (req) => {
       let { list } = JSON.parse(req.body);
-      const data = filter(catInfo, (card) => some(list, (id) => isEqual(card?.id, id)));
-      return {
-        result: 'success',
-        data: data,
-      };
+      return filter(catInfo, (card) => some(list, (id) => isEqual(card?.id, id)));
     },
   },
 ];
@@ -77,5 +73,44 @@ export const randomListImagesOfCat = [
         ({ count }) => sampleSize(catImgJson.data, count),
         (list) => map(list, (item) => item.url),
       )(res.url),
+  },
+];
+
+export const addCommentByCardId = [
+  {
+    name: 'addComment',
+    type: 'post',
+    url: /\/api\/add\/comment/,
+    path: '/api/add/comment',
+    todo: (req) => {
+      const { id, comment, name, avatar } = JSON.parse(req.body);
+      const updateInfo = update(
+        catInfo.find((cat) => isEqual(cat.id, id)),
+        'user_messages',
+        (value) => [
+          ...value,
+          {
+            avatar,
+            comment: comment,
+            name: name,
+          },
+        ],
+      );
+      catInfo = unionBy(catInfo, updateInfo, 'id');
+      return updateInfo;
+    },
+  },
+];
+
+export const getCardOfSearch = [
+  {
+    name: 'searchCard',
+    type: 'get',
+    url: /\/api\/card\/search/,
+    path: '/api/card/search',
+    todo: (req) => {
+      const { term } = getUrlQueryParams(req.url);
+      return catInfo.filter((cat) => cat.title.includes(term));
+    },
   },
 ];

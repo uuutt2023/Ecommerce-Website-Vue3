@@ -1,6 +1,7 @@
 import userJson from '@/mock/node/userInfo.json';
 import axios from 'axios';
 import { find, isEqual, isEmpty } from 'lodash';
+import { getUrlQueryParams } from '@/assets/js/util';
 
 export const GetAll = [{ name: 'userInfo', url: '/api/user', path: '/api/user' }];
 
@@ -10,14 +11,14 @@ export const ChangePwd = [
     type: 'post',
     url: /api\/user\/changePwd/,
     path: '/api/user/changePwd',
-    todo: (req) => {
+    todo: async (req) => {
       const { username, password } = JSON.parse(req?.body);
       // 判断账号是否存在
       let hasAccount = find(userJson.data.userinfo, (user) => isEqual(user.username, username));
       if (hasAccount) {
         hasAccount.password = password;
         userJson.data.userinfo[username] = hasAccount;
-        axios.put('/api/user', userJson);
+        await axios.put('/api/user', userJson);
       }
       return {
         result: !isEmpty(hasAccount) ? 'success' : 'error',
@@ -79,7 +80,7 @@ export const SignIn = [
       const loginInfo = find(userJson.data.userinfo, ({ username, password }) =>
         isEqual(data, { username, password }),
       );
-      console.log(loginInfo);
+      // console.log(loginInfo);
       // const loginInfo = Array(...userJson.data.userinfo).find(
       //   (u) => u.username === username && u.password === password,
       // );
@@ -87,12 +88,27 @@ export const SignIn = [
         result: loginInfo != null ? 'success' : 'error',
         data: {
           user: {
+            avatar: loginInfo?.avatar || null,
+            name: loginInfo?.name || null,
             username: loginInfo?.username || data.username,
             permissions: loginInfo?.permissions || null,
           },
         },
       };
       // End
+    },
+  },
+];
+
+export const GetUserAvatar = [
+  {
+    name: 'userAvatar',
+    url: /\/api\/user\/avatar/,
+    path: '/api/user/avatar',
+    todo: (req) => {
+      const { queryName } = getUrlQueryParams(req.url);
+      const { avatar } = find(userJson.data.userinfo, ({ name }) => isEqual(name, queryName));
+      return avatar;
     },
   },
 ];
