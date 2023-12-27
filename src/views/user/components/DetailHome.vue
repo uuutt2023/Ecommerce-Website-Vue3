@@ -1,11 +1,14 @@
 <script setup>
-import { nextTick, reactive, ref } from 'vue';
+import { nextTick, ref } from 'vue';
 import { checkValueInterpolation, toggleFavorite } from '@/assets/js/util';
 import TopBar from '@/components/TopBar.vue';
 import { get } from '@/http';
+import { isNull, isObject } from 'lodash';
+import store from '@/store/store';
+import axios from 'axios';
 
 // 详情页数据
-let detail = reactive({
+let detail = ref({
   // 详情页基本数据
   id: 'xxx',
   title: '标题',
@@ -26,9 +29,37 @@ let detail = reactive({
 const imgUrl = ref([]);
 nextTick(async () => {
   // 请求后端获取数据
-  detail = await get(`/api/detail/cat${location.search}`);
-  imgUrl.value = [detail.url, ...(await get('/api/random/img/cat?count=4'))];
+  await getDetail();
+  imgUrl.value = [detail.value.url, ...(await get('/api/random/img/cat?count=4'))];
 });
+
+const getDetail = async () => (detail.value = await get(`/api/detail/cat${location.search}`));
+
+// 发布评论
+const comment = ref(null);
+// 最底部元素
+const back = ref(null);
+
+async function sendComment() {
+  if (isNull(comment.value)) {
+    return false;
+  }
+  detail.value = (
+    await axios.post(`/api/add/comment`, {
+      id: detail.value.id,
+      name: store.state.user.name,
+      comment: comment.value,
+      avatar: await getAvatar(store.state.user.name),
+    })
+  ).data;
+  comment.value = null;
+  await nextTick(() => back.value.scrollIntoView({ behavior: 'smooth' }));
+}
+
+const getAvatar = async (name) => {
+  const resp = await axios.get(`/api/user/avatar?queryName=${name}`);
+  return require(`@/assets/images/avatar/${resp.data}.jpg`);
+};
 </script>
 
 <template>
@@ -101,10 +132,23 @@ nextTick(async () => {
         :key="index"
         class="my-4 px-3 pb-4 d-flex align-items-start border-1 border-bottom">
         <img
-          :src="`https://picsum.photos/48?${index}`"
+          :src="isObject(item) ? item?.avatar : `https://picsum.photos/48?${index}`"
           alt="tx"
           class="col-2 rounded-circle flex-shrink-0" />
-        <div class="flex-grow-1 ms-3">
+
+        <div
+          v-if="isObject(item)"
+          class="flex-grow-1 ms-3">
+          <p>
+            {{ item?.name }}
+            <small class="d-block text-secondary">n个小时前 - IP属地：天津</small>
+          </p>
+          <p class="lh-sm mb-4">{{ item.comment }}</p>
+        </div>
+
+        <div
+          class="flex-grow-1 ms-3"
+          v-else>
           <p>
             测试用户
             <small class="d-block text-secondary">n个小时前 - IP属地：天津</small>
@@ -114,16 +158,30 @@ nextTick(async () => {
       </article>
     </section>
 
+    <span ref="back"></span>
+
     <footer
-      class="fixed-bottom bg-light border-top border-secondary row align-items-center py-2 px-3 shadow-lg">
-      <input
-        class="form-control rounded-5 col py-2 mt-1"
-        placeholder="不发没关系，请继续友善哦~"
-        type="text" />
-      <i
-        @click="toggleFavorite()"
-        :class="checkValueInterpolation(detail) ? 'icon-like-fill' : 'icon-like'"
-        class="iconfont col-1 p-0 ps-2 text-center" />
+      class="fixed-bottom bg-light border-top border-secondary row align-items-center py-2 px-2 shadow-lg">
+      <form
+        @submit.prevent="sendComment"
+        class="input-group align-items-center">
+        <input
+          v-model="comment"
+          aria-describedby="btn-sendComment"
+          class="form-control col py-2 rounded-start-5 border-0"
+          placeholder="不发没关系，请继续友善哦~"
+          type="text" />
+        <button
+          type="submit"
+          class="btn btn-outline-primary rounded-end-5 px-3"
+          id="btn-sendComment">
+          发送
+        </button>
+        <i
+          @click="toggleFavorite(detail)"
+          :class="checkValueInterpolation(detail) ? 'icon-like-fill' : 'icon-like'"
+          class="iconfont col-1 p-0 ps-2 text-center" />
+      </form>
     </footer>
   </div>
 </template>
