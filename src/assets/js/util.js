@@ -55,13 +55,17 @@ export async function jumpToDetail(url, id) {
 export function checkValueInterpolation(list) {
   // Vuex 中存储的用户收藏数据
   const current = store.getters.currentUserFavorites ?? [];
-  if (current.length > 0 && isArray(list)) {
-    const _ = require('lodash'),
-      filterList = _(list)
-        .filter(({ id }) => indexOf(current, id) !== -1)
-        .map((item) => ({ ...item, isActive: true }))
-        .value();
-    return assign(list, filterList);
+
+  if (isArray(list)) {
+    if (current.length > 0) {
+      const _ = require('lodash'),
+        filterList = _(list)
+          .filter(({ id }) => indexOf(current, id) !== -1)
+          .map((item) => ({ ...item, isActive: true }))
+          .value();
+      return assign(list, filterList);
+    }
+    return list;
   }
 
   if (isObject(list)) {
