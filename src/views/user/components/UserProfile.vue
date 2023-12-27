@@ -3,6 +3,7 @@ import { useCookie } from 'vue-cookie-next';
 import { prefixLocal } from '@/assets/js/local';
 import { switchLang } from '@/lang/i18n';
 import router from '@/router';
+import store from '@/store/store';
 
 const imgUrl = [
   require('@/assets/images/user/01.png'),
@@ -33,9 +34,9 @@ const fn = {
       <img
         alt="头像图片"
         class="col-3 rounded-circle ms-3"
-        src="https://picsum.photos/200" />
+        :src="store.getters.currentUserAvatar" />
       <div class="col-auto">
-        <p class="h3 d-inline-block">林北</p>
+        <p class="h3 d-inline-block">{{ store.state.user.name }}</p>
         <p class="small mb-0 text-secondary">猫猫~我的最爱</p>
       </div>
     </div>

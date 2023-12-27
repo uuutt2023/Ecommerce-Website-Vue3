@@ -1,15 +1,22 @@
 <script setup>
 import TopBarVue from '@/components/TopBar.vue';
 import { jumpToDetail, toggleFavorite } from '@/assets/js/util';
-import { post } from '@/http';
 import store from '@/store/store';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import axios from 'axios';
+import { assign, map } from 'lodash';
 
 // * 渲染列表请求
 const listRender = ref([]);
-post('/api/card/favorites', {
-  list: store.getters.currentUserFavorites,
-}).then(({ data }) => (listRender.value = data));
+
+async function init() {
+  const data = (
+    await axios.post('/api/card/favorites', { list: store.getters.currentUserFavorites })
+  ).data;
+  listRender.value = map(data, (item) => assign(item, { isActive: true }));
+}
+
+onMounted(init);
 </script>
 
 <template>
@@ -32,7 +39,7 @@ post('/api/card/favorites', {
       <div class="card-body py-2">
         <p class="card-title m-0">{{ item.title }}</p>
         <i
-          :class="!item.isActive ? 'icon-like-fill' : 'icon-like'"
+          :class="!item.isActive ? 'icon-like' : 'icon-like-fill'"
           class="iconfont btn-like me-2"
           @click.stop="toggleFavorite(item)" />
       </div>

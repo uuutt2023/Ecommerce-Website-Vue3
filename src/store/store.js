@@ -1,8 +1,7 @@
 import { createStore } from 'vuex';
 import { flattenObjet } from '@/assets/js/util';
 
-import { fromPairs, set, forEach, assign } from 'lodash';
-import _ from 'lodash';
+import { set, forEach, uniq, isEqual } from 'lodash';
 
 const store = createStore({
   state: {
@@ -10,6 +9,8 @@ const store = createStore({
     isLoading: false,
     userFavorites: {},
     user: {
+      avatar: '',
+      name: '',
       username: '',
       permissions: '',
     },
@@ -25,11 +26,7 @@ const store = createStore({
       state.isLoading = bool;
     },
     setListFavorite(state, listFavorite) {
-      // 用户收藏
-      state.userFavorites = assign(
-        fromPairs([[state.user.username, listFavorite]]),
-        state.userFavorites,
-      );
+      state.userFavorites[state.user.username] = listFavorite;
     },
     setUserInfo(state, user) {
       // 当前用户
@@ -47,30 +44,28 @@ const store = createStore({
 
   actions: {
     addUserFavorite({ getters, commit }, favoriteId) {
-      commit(
-        'setListFavorite',
-        // 用户操作：添加收藏
-        _(getters.currentUserFavorites ?? [])
-          .push(favoriteId)
-          .uniq()
-          .value(),
-      );
+      const user = getters.currentUserFavorites ?? [];
+      user.push(favoriteId);
+      commit('setListFavorite', uniq(user));
     },
 
     removeUserFavorite({ getters, commit }, favoriteId) {
-      commit(
-        'setListFavorite',
-        // 用户操作：移除收藏
-        _(getters.currentUserFavorites ?? [])
-          .filter((item) => item !== favoriteId)
-          .value(),
-      );
+      const user = getters.currentUserFavorites ?? [];
+      const filter = user.filter((item) => !isEqual(item, favoriteId));
+      commit('setListFavorite', filter);
     },
   },
 
   getters: {
     // 获取当前登录用户的收藏
     currentUserFavorites: (state) => state.userFavorites[state.user.username],
+    // 当前用户的头像
+    currentUserAvatar: (state) =>
+      require(
+        `@/assets/images/${
+          state.user.avatar ? `avatar/${state.user.avatar}.jpg` : 'user/Oval.png'
+        }`,
+      ),
   },
 });
 

@@ -51,7 +51,7 @@ const keyword = reactive({
   hair_length: '不限',
 });
 
-const update = flow(
+const update = flow([
   Object.entries,
   (listTmp) => sortBy(listTmp, ([, value]) => (isEqual(value, '不限') ? 0 : 1)),
   (listTmp) =>
@@ -67,7 +67,7 @@ const update = flow(
       [],
     ),
   (listTmp) => set(listRender, 'value', listTmp),
-);
+]);
 
 watch(keyword, update);
 

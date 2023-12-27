@@ -5,7 +5,7 @@ import { flow, isEmpty, sampleSize, throttle, unionBy } from 'lodash';
 import { checkValueInterpolation, jumpToDetail, toggleFavorite } from '@/assets/js/util';
 import axios from 'axios';
 
-const { url, clickUrl, count, width } = defineProps({
+const { list, url, clickUrl, count, width } = defineProps({
   width: {
     type: String,
     default: () => '',
@@ -22,6 +22,10 @@ const { url, clickUrl, count, width } = defineProps({
     type: Number,
     default: () => 0,
   },
+  list: {
+    type: Array,
+    default: () => [],
+  },
 });
 
 const listRender = ref([]),
@@ -37,8 +41,8 @@ const getListImages = throttle(async () => {
     // 用户已点亮的爱心恢复
     listRender.value = flow(
       checkValueInterpolation,
-      (list) => sampleSize(list, count),
-      (list) => unionBy([...listRender.value], list, (item) => item.id),
+      (lt) => sampleSize(lt, count),
+      (lt) => unionBy([...listRender.value], lt, (item) => item.id),
     )((await axios.get(url)).data);
     canLoading.value = true;
   }
@@ -85,7 +89,7 @@ nextTick(() => {
     @touchstart.passive="isTouch = true">
     <header class="position-absolute start-0 w-100 text-center">
       <i
-        v-show="canLoading && listRender.length > 0"
+        v-show="list.length === 0 && canLoading && listRender.length > 0"
         ref="headerLoading"
         class="spinner-border" />
     </header>
@@ -95,7 +99,7 @@ nextTick(() => {
       horizontal-order="true"
       item-selector=".card">
       <div
-        v-for="item in listRender"
+        v-for="item in list.length > 0 ? list : listRender"
         v-show="item.url"
         :key="item.id"
         v-masonry-tile
@@ -119,7 +123,7 @@ nextTick(() => {
     </section>
     <!-- 上滑更新 -->
     <footer
-      v-show="canLoading && listRender.length > 0"
+      v-show="list.length === 0 && canLoading && listRender.length > 0"
       class="position-absolute start-0 w-100">
       <i
         ref="footerLoading"
