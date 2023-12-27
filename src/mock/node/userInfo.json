@@ -12,13 +12,43 @@
         "username": "uuutt",
         "password": "123456",
         "permissions": "user",
-        "name": "uuutt"
+        "name": "uuutt",
+        "avatar": "cjh"
       },
       {
-        "username": "demo",
+        "username": "xieji",
         "password": "123456",
         "permissions": "user",
-        "name": "测试名字"
+        "name": "谢姬",
+        "avatar": "xj"
+      },
+      {
+        "username": "lingbei",
+        "password": "123456",
+        "permissions": "user",
+        "name": "林北",
+        "avatar": "lqs"
+      },
+      {
+        "username": "guodecheng",
+        "password": "123456",
+        "permissions": "user",
+        "name": "卧龙",
+        "avatar": "gdc"
+      },
+      {
+        "username": "chenhongbing",
+        "password": "123456",
+        "permissions": "user",
+        "name": "凤雏",
+        "avatar": "chb"
+      },
+      {
+        "username": "liwenpeng",
+        "password": "123456",
+        "permissions": "user",
+        "name": "文鹏",
+        "avatar": "lwp"
       }
     ]
   }
