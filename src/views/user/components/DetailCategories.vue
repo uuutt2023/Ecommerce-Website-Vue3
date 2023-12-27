@@ -145,10 +145,10 @@ watch(isSort, GetEchar);
 
       <!-- 排序开关 -->
       <div
-        @click="isSort = !isSort"
         id="btn-sort"
         class="form-check form-check-reverse form-switch position-relative">
         <input
+          @click="isSort = !isSort"
           class="form-check-input"
           type="checkbox"
           id="flexSwitchCheckDefault" />
@@ -161,7 +161,6 @@ watch(isSort, GetEchar);
 
       <div
         id="catChart"
-        class="w-100"
         style="height: 400px" />
 
       <article class="px-2">
