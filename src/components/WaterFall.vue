@@ -1,6 +1,6 @@
 <!-- eslint-disable no-unused-vars -->
 <script setup>
-import { nextTick, ref } from 'vue';
+import { computed, nextTick, ref } from 'vue';
 import { flow, isEmpty, sampleSize, throttle, unionBy } from 'lodash';
 import { checkValueInterpolation, jumpToDetail, toggleFavorite } from '@/assets/js/util';
 import axios from 'axios';
@@ -80,16 +80,20 @@ nextTick(() => {
   ).observe(footerLoading.value); // 底部加载图标出现时
   new IntersectionObserver(refreshListImages, options).observe(headerLoading.value); // 顶部加载出现时全部重置
 });
+
+const isLoadShow = computed(() => list.length === 0 && canLoading && listRender.value.length > 0);
 </script>
 
 <template>
   <div
+    :class="{ 'extra-sliding-area': list.length === 0 }"
     class="container-fluid position-relative"
     @touchend="isTouch = false"
     @touchstart.passive="isTouch = true">
-    <header class="position-absolute start-0 w-100 text-center">
+    <header
+      v-show="isLoadShow"
+      class="position-absolute start-0 w-100 text-center">
       <i
-        v-show="list.length === 0 && canLoading && listRender.length > 0"
         ref="headerLoading"
         class="spinner-border" />
     </header>
@@ -123,7 +127,7 @@ nextTick(() => {
     </section>
     <!-- 上滑更新 -->
     <footer
-      v-show="list.length === 0 && canLoading && listRender.length > 0"
+      v-show="isLoadShow"
       class="position-absolute start-0 w-100">
       <i
         ref="footerLoading"
@@ -152,15 +156,17 @@ nextTick(() => {
     top: 0;
   }
 
-  section {
-    scroll-snap-align: start;
-    min-height: 90vh;
-  }
-
   header,
   footer {
     height: 10vh;
     @extend %flex-center;
+  }
+}
+
+.extra-sliding-area {
+  section {
+    scroll-snap-align: start;
+    min-height: 90vh;
   }
 
   &:after,
