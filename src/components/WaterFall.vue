@@ -1,6 +1,5 @@
-<!-- eslint-disable no-unused-vars -->
 <script setup>
-import { computed, nextTick, onActivated, onMounted, ref, watch } from 'vue';
+import { computed, nextTick, ref } from 'vue';
 import { flow, isEmpty, sampleSize, throttle, unionBy } from 'lodash';
 import { checkValueInterpolation, jumpToDetail, toggleFavorite } from '@/assets/js/util';
 import axios from 'axios';
