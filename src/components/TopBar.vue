@@ -33,7 +33,6 @@ const jumpBack = () => router.back();
           <h5 class="m-0 text-center">{{ title.length > 0 ? title : $route.meta?.title }}</h5>
         </div>
         <div class="col-auto p-0 d-inline-flex justify-content-end">
-          <i class="iconfont icon-set-up" />
           <slot name="right" />
         </div>
       </div>

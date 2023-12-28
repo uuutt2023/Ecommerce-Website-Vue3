@@ -47,26 +47,38 @@ const fn = {
 
     <div class="row row-cols-4 text-center">
       <!-- module2指收藏，浏览记录等 -->
-      <p class="btn btn-outline-secondary border-0 col p-3 m-0">
+      <button
+        type="button"
+        class="btn btn-outline-secondary border-0 col p-3 m-0"
+        disabled>
         <i class="iconfont icon-book" />
         <br />
         <small>书签</small>
-      </p>
-      <p class="btn btn-outline-secondary border-0 col p-3 m-0">
+      </button>
+      <button
+        type="button"
+        class="btn btn-outline-secondary border-0 col p-3 m-0"
+        disabled>
         <i class="iconfont icon-history" />
         <br />
         <small>历史</small>
-      </p>
-      <p class="btn btn-outline-secondary border-0 col p-3 m-0">
+      </button>
+      <button
+        type="button"
+        class="btn btn-outline-secondary border-0 col p-3 m-0"
+        disabled>
         <i class="iconfont icon-download" />
         <br />
         <small>下载</small>
-      </p>
-      <p class="btn btn-outline-secondary border-0 col p-3 m-0">
+      </button>
+      <button
+        type="button"
+        class="btn btn-outline-secondary border-0 col p-3 m-0"
+        disabled>
         <i class="iconfont icon-focus" />
         <br />
         <small>关注</small>
-      </p>
+      </button>
     </div>
 
     <span
@@ -134,23 +146,31 @@ const fn = {
 
     <div class="row row-cols-4 text-center mt-auto">
       <!-- module3指的是常用功能 -->
-      <p class="btn btn-outline-secondary border-0 col p-3 m-0">
+      <button
+        type="button"
+        class="btn btn-outline-secondary border-0 col p-3 m-0"
+        disabled>
         <i class="iconfont icon-night-day" />
         <br />
         <small>白天</small>
-      </p>
-      <p
+      </button>
+      <button
+        type="button"
         class="btn btn-outline-secondary border-0 col p-3 m-0"
+        disabled
         @click="switchLang">
         <i class="iconfont icon-i18n" />
         <br />
         <small>中转英</small>
-      </p>
-      <p class="btn btn-outline-secondary border-0 col p-3 m-0">
+      </button>
+      <button
+        type="button"
+        class="btn btn-outline-secondary border-0 col p-3 m-0"
+        disabled>
         <i class="iconfont icon-set-up" />
         <br />
         <small>设置</small>
-      </p>
+      </button>
       <p
         class="btn btn-outline-secondary border-0 col p-3 m-0"
         @click="fn.exitApp">
