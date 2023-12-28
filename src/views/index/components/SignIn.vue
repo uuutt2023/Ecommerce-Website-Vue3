@@ -73,7 +73,7 @@ nextTick(() => {
       :class="{ 'bg-danger text-white': eq(+route.query.show, 2) }"
       aria-atomic="true"
       aria-live="assertive"
-      class="toast show">
+      class="toast show w-100">
       <div class="toast-header">
         <strong class="me-auto">{{ toast.title }}~</strong>
         <button
