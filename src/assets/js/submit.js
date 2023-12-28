@@ -57,8 +57,8 @@ export async function changePwd(values, actions) {
       password: values.pwd1,
     },
   };
-  await submitPost(options, (resp) => {
-    if (resp.result === 'error') {
+  await submitPost(options, ({ data }) => {
+    if (data.result === 'error') {
       actions.setErrors({
         act: '账号不存在',
       });
