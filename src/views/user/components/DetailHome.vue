@@ -49,17 +49,12 @@ async function sendComment() {
       id: detail.value.id,
       name: store.state.user.name,
       comment: comment.value,
-      avatar: await getAvatar(store.state.user.name),
+      avatar: store.getters.currentUserAvatar,
     })
   ).data;
   comment.value = null;
   await nextTick(() => back.value.scrollIntoView({ behavior: 'smooth' }));
 }
-
-const getAvatar = async (name) => {
-  const resp = await axios.get(`/api/user/avatar?queryName=${name}`);
-  return require(`@/assets/images/avatar/${resp.data}.jpg`);
-};
 </script>
 
 <template>
@@ -136,24 +131,12 @@ const getAvatar = async (name) => {
           alt="tx"
           class="col-2 rounded-circle flex-shrink-0" />
 
-        <div
-          v-if="isObject(item)"
-          class="flex-grow-1 ms-3">
+        <div class="flex-grow-1 ms-3">
           <p>
-            {{ item?.name }}
+            {{ isObject(item) ? item?.name : '测试用户' }}
             <small class="d-block text-secondary">n个小时前 - IP属地：天津</small>
           </p>
-          <p class="lh-sm mb-4">{{ item.comment }}</p>
-        </div>
-
-        <div
-          class="flex-grow-1 ms-3"
-          v-else>
-          <p>
-            测试用户
-            <small class="d-block text-secondary">n个小时前 - IP属地：天津</small>
-          </p>
-          <p class="lh-sm mb-4">{{ item }}</p>
+          <p class="lh-sm mb-4">{{ isObject(item) ? item.comment : item }}</p>
         </div>
       </article>
     </section>
