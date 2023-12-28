@@ -2,8 +2,10 @@
 import TopBar from '@/components/TopBar.vue';
 import WaterFall from '@/components/WaterFall.vue';
 import store from '@/store/store';
-import { ref } from 'vue';
+import { nextTick, onActivated, ref } from 'vue';
 import axios from 'axios';
+import { onBeforeRouteLeave } from 'vue-router';
+import { floor } from 'lodash';
 
 const searchTerm = ref();
 const listRendering = ref([]);
@@ -11,6 +13,22 @@ const listRendering = ref([]);
 const onSearch = async () => {
   listRendering.value = (await axios.get(`/api/card/search?term=${searchTerm.value}`)).data;
 };
+
+const scrollY = ref();
+/**
+ * 记录当前滚动条位置
+ * */
+onBeforeRouteLeave((to, from, next) => {
+  scrollY.value = floor(document.querySelector('#content').scrollTop);
+  next();
+});
+
+/**
+ * 恢复滚动条位置
+ * */
+onActivated(() =>
+  nextTick().then(() => document.querySelector('#content').scroll(0, scrollY.value)),
+);
 </script>
 
 <template>

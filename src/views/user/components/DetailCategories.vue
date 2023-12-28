@@ -110,68 +110,70 @@ watch(isSort, GetEchar);
 
 <template>
   <TopBar :title="detail.cname" />
-  <div class="container-fluid p-3">
-    <header class="card m-0 shadow rounded-3 overflow-hidden row">
-      <img
-        class="card-img-top p-0"
-        :src="detail.avatar_src"
-        alt="顶部图" />
-      <div class="card-body p-2 row-cols-2 row mx-0">
-        <dl
-          class="my-1 d-flex pe-0"
-          :class="index < table.length - 1 || table.length % 2 === 0 ? 'col' : 'col-12'"
-          v-for="([key, val], index) in table"
-          :key="index">
-          <dt
-            v-text="key"
-            class="p-0 me-1"
-            style="width: 3.5em" />
-          <dd
-            v-text="val"
-            class="m-0 d-inline-block text-truncate" />
-        </dl>
-      </div>
-    </header>
-
-    <section>
-      <div class="d-flex w-100 overflow-scroll mt-4">
+  <div class="container-fluid px-3">
+    <div class="scroll py-3">
+      <header class="card m-0 shadow rounded-3 overflow-hidden row">
         <img
-          class="mx-1 rounded-2 border"
-          v-for="(url, index) in detail.pic"
-          :key="index"
-          :src="url"
-          :alt="detail.name + index" />
-      </div>
+          class="card-img-top p-0"
+          :src="detail.avatar_src"
+          alt="顶部图" />
+        <div class="card-body p-2 row-cols-2 row mx-0">
+          <dl
+            class="my-1 d-flex pe-0"
+            :class="index < table.length - 1 || table.length % 2 === 0 ? 'col' : 'col-12'"
+            v-for="([key, val], index) in table"
+            :key="index">
+            <dt
+              v-text="key"
+              class="p-0 me-1"
+              style="width: 3.5em" />
+            <dd
+              v-text="val"
+              class="m-0 d-inline-block text-truncate" />
+          </dl>
+        </div>
+      </header>
 
-      <!-- 排序开关 -->
-      <div
-        id="btn-sort"
-        class="form-check form-check-reverse form-switch position-relative">
-        <input
-          @click="isSort = !isSort"
-          class="form-check-input"
-          type="checkbox"
-          id="flexSwitchCheckDefault" />
-        <label
-          class="form-check-label"
-          for="flexSwitchCheckDefault">
-          分数排序
-        </label>
-      </div>
+      <section>
+        <div class="d-flex w-100 overflow-scroll mt-4 py-2">
+          <img
+            class="me-2 rounded-2 border"
+            v-for="(url, index) in detail.pic"
+            :key="index"
+            :src="url"
+            :alt="detail.name + index" />
+        </div>
 
-      <div
-        id="catChart"
-        style="height: 400px" />
+        <!-- 排序开关 -->
+        <div
+          id="btn-sort"
+          class="form-check form-check-reverse form-switch position-relative">
+          <input
+            @click="isSort = !isSort"
+            class="form-check-input"
+            type="checkbox"
+            id="flexSwitchCheckDefault" />
+          <label
+            class="form-check-label"
+            for="flexSwitchCheckDefault">
+            分数排序
+          </label>
+        </div>
 
-      <article class="px-2">
-        <h2>简述</h2>
-        <p
-          class="lh-lg"
-          style="text-indent: 2em">
-          {{ detail.archives }}
-        </p>
-      </article>
-    </section>
+        <div
+          id="catChart"
+          style="height: 400px" />
+
+        <article class="px-2">
+          <h2>简述</h2>
+          <p
+            class="lh-lg"
+            style="text-indent: 2em">
+            {{ detail.archives }}
+          </p>
+        </article>
+      </section>
+    </div>
   </div>
 </template>
 

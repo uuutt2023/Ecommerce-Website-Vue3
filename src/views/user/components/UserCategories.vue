@@ -2,17 +2,17 @@
 import TopBarVue from '@/components/TopBar.vue';
 import { nextTick, reactive, ref, watch } from 'vue';
 
-import { get } from '@/http';
 import { jumpToDetail } from '@/assets/js/util';
 import BaseCategorized from '@/components/BaseCategorized.vue';
 
 import { filter, flow, isEqual, reduce, set, some, sortBy, toLower } from 'lodash';
+import axios from 'axios';
 
 const listRender = ref([]);
 let temp;
 
 nextTick(async () => {
-  temp = [...(await get(`/api/cat/card`))];
+  temp = [...(await axios.get(`/api/cat/card`)).data];
   if (listRender.value?.length === 0) listRender.value = temp;
 });
 
@@ -138,34 +138,42 @@ function onSearch() {
   </TopBarVue>
 
   <div class="container-fluid px-3">
-    <section class="row row-cols-2">
-      <div
-        v-for="(item, index) in listRender"
-        v-show="!item?.canload"
-        :key="index"
-        class="col my-2"
-        @click="jumpToDetail('/user/categories/detail', item.name)">
-        <div class="card-img-top">
-          <img
-            :src="item.avatar_src"
-            alt="猫猫图"
-            class="w-100 rounded-3 border border-4"
-            @error="item.canload = true" />
-        </div>
-        <div class="card-body">
-          <div class="card-title">
-            <p class="m-0">
-              {{ item.cname }}
-            </p>
-            <p
-              v-if="searchTerm != null"
-              class="small m-0">
-              {{ item.nickname }}
-            </p>
-            <small v-if="item.name">{{ item.name }}</small>
+    <div class="scroll">
+      <section class="row row-cols-2">
+        <div
+          v-for="(item, index) in listRender"
+          v-show="!item?.canload"
+          :key="index"
+          class="col my-2"
+          @click="jumpToDetail('/user/categories/detail', item.name)">
+          <div class="card-img-top">
+            <img
+              :src="item.avatar_src"
+              alt="猫猫图"
+              class="w-100 rounded-3 border border-4"
+              @error="item.canload = true" />
+          </div>
+          <div class="card-body">
+            <div class="card-title">
+              <p class="m-0">
+                {{ item.cname }}
+              </p>
+              <p
+                v-if="searchTerm != null"
+                class="small m-0">
+                {{ item.nickname }}
+              </p>
+              <small v-if="item.name">{{ item.name }}</small>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   </div>
 </template>
+
+<style scoped>
+.scroll {
+  min-height: 80vh;
+}
+</style>

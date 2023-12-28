@@ -8,7 +8,7 @@ import router from '@/router';
  * @param {Object} data 请求附带Json数据
  * @param {Function} callback 请求成功后回调方法
  * */
-const submitPost = async ({ url, data }, callback) => {
+export const submitPost = async ({ url, data }, callback) => {
   // 加载动画显示
   store.commit('setLoading', true);
   // 请求头配置

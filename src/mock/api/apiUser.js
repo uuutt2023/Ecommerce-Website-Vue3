@@ -1,6 +1,6 @@
 import userJson from '@/mock/node/userInfo.json';
 import axios from 'axios';
-import { find, isEqual, isEmpty } from 'lodash';
+import { find, isEqual, isEmpty, isNull } from 'lodash';
 import { getUrlQueryParams } from '@/assets/js/util';
 
 export const GetAll = [{ name: 'userInfo', url: '/api/user', path: '/api/user' }];
@@ -109,6 +109,19 @@ export const GetUserAvatar = [
       const { queryName } = getUrlQueryParams(req.url);
       const { avatar } = find(userJson.data.userinfo, ({ name }) => isEqual(name, queryName));
       return avatar;
+    },
+  },
+];
+
+export const hasUser = [
+  {
+    name: 'hasUser',
+    type: 'post',
+    url: /\/api\/user\/search/,
+    path: '/api/user/search',
+    todo: (req) => {
+      const parse = JSON.parse(req?.body);
+      return !isNull(find(userJson.data.userinfo, parse));
     },
   },
 ];

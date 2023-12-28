@@ -2,18 +2,21 @@
 import { switchLang, isEnglish } from '@/lang/i18n';
 import { prefixLocal, vuexDataSaveIntoBrowser } from '@/assets/js/local';
 import { useCookie } from 'vue-cookie-next';
-import { isEmpty } from 'lodash';
 import router from '@/router';
+import axios from 'axios';
+import { nextTick } from 'vue';
+import { isEmpty } from 'lodash';
 
 // Vuex 保存与读取 浏览器本地存储
 vuexDataSaveIntoBrowser();
 
 // 扫描cookie
 const cookie = useCookie().getCookie(`${prefixLocal.toLocaleLowerCase()}-user`);
-// TODO 判断用户数据是否有效
-if (!isEmpty(cookie)) {
-  router.push(`/${cookie.permissions}`);
-}
+nextTick(async () => {
+  if (isEmpty(cookie)) return;
+  const hasUser = (await axios.post('/api/user/search', cookie)).data;
+  hasUser && (await router.push(`/${cookie.permissions}`));
+});
 </script>
 
 <template>

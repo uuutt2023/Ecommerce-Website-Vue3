@@ -1,9 +1,12 @@
 <!-- eslint-disable no-unused-vars -->
 <script setup>
-import { computed, nextTick, ref } from 'vue';
+import { computed, nextTick, onActivated, onMounted, ref, watch } from 'vue';
 import { flow, isEmpty, sampleSize, throttle, unionBy } from 'lodash';
 import { checkValueInterpolation, jumpToDetail, toggleFavorite } from '@/assets/js/util';
 import axios from 'axios';
+import store from '@/store/store';
+import router from '@/router';
+import { onBeforeRouteLeave } from 'vue-router';
 
 const { list, url, clickUrl, count, width } = defineProps({
   width: {
@@ -33,23 +36,26 @@ const listRender = ref([]),
   canLoading = ref(false),
   isTouch = ref(false);
 
+const userSIlluminatedLoveRestoration = async () =>
+  (listRender.value = flow(
+    checkValueInterpolation,
+    (lt) => sampleSize(lt, count),
+    (lt) => unionBy([...listRender.value], lt, (item) => item.id),
+  )((await axios.get(url)).data));
+
 /**
  * 请求列表数据
  */
 const getListImages = throttle(async () => {
   if (!isEmpty(url)) {
     // 用户已点亮的爱心恢复
-    listRender.value = flow(
-      checkValueInterpolation,
-      (lt) => sampleSize(lt, count),
-      (lt) => unionBy([...listRender.value], lt, (item) => item.id),
-    )((await axios.get(url)).data);
+    await userSIlluminatedLoveRestoration();
     canLoading.value = true;
   }
 }, 600);
 
 /**
- * 下拉刷新图片
+ * 下拉式添加推荐卡片
  */
 function refreshListImages() {
   if (canLoading.value && !isTouch.value) {
@@ -80,12 +86,12 @@ nextTick(() => {
   ).observe(footerLoading.value); // 底部加载图标出现时
   new IntersectionObserver(refreshListImages, options).observe(headerLoading.value); // 顶部加载出现时全部重置
 });
-
 const isLoadShow = computed(() => list.length === 0 && canLoading && listRender.value.length > 0);
 </script>
 
 <template>
   <div
+    id="content"
     :class="{ 'extra-sliding-area': list.length === 0 }"
     class="container-fluid position-relative"
     @touchend="isTouch = false"
@@ -98,6 +104,7 @@ const isLoadShow = computed(() => list.length === 0 && canLoading && listRender.
         class="spinner-border" />
     </header>
     <section
+      class="scroll"
       ref="waterFall"
       v-masonry
       horizontal-order="true"
@@ -165,14 +172,11 @@ const isLoadShow = computed(() => list.length === 0 && canLoading && listRender.
 
 .extra-sliding-area {
   section {
-    scroll-snap-align: start;
-    min-height: 90vh;
+    min-height: 80vh;
   }
 
   &:after,
   &:before {
-    content: '';
-    display: block;
     height: 10vh; /* 调整额外滑动区域的高度 */
   }
 }

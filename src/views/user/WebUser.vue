@@ -39,6 +39,17 @@ main {
   flex-grow: 1;
   @extend %none-scrollBar;
   scroll-snap-type: y mandatory;
+
+  .scroll {
+    scroll-snap-align: start;
+  }
+
+  &:after,
+  &:before {
+    content: '';
+    display: block;
+    height: 5vh; /* 调整额外滑动区域的高度 */
+  }
 }
 
 .bottomNav {

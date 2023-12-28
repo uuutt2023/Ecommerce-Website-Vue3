@@ -16,7 +16,7 @@ const jumpBack = () => router.back();
 </script>
 
 <template>
-  <div>
+  <div class="shadow-sm">
     <header class="row d-flex flex-column px-4">
       <div
         id="bar"
@@ -77,5 +77,9 @@ header {
 
 .iconfont {
   font-size: 26px;
+}
+
+.shadow-sm {
+  z-index: 2;
 }
 </style>

@@ -4,7 +4,7 @@ import { jumpToDetail, toggleFavorite } from '@/assets/js/util';
 import store from '@/store/store';
 import { onMounted, ref } from 'vue';
 import axios from 'axios';
-import { assign, map } from 'lodash';
+import { assign, isEmpty, map } from 'lodash';
 
 // * 渲染列表请求
 const listRender = ref([]);
@@ -23,25 +23,32 @@ onMounted(init);
   <TopBarVue :can-back="false" />
 
   <section class="container-fluid position-relative">
-    <div
-      v-for="item in listRender"
-      v-show="item.url"
-      :key="item.id"
-      v-masonry-tile
-      class="card my-3"
-      @click="jumpToDetail('/user/home/detail', item.id)">
-      <div class="card-img-top">
-        <img
-          :src="item.url"
-          alt="catImg"
-          class="img-thumbnail rounded-3 w-100" />
+    <div class="scroll py-2 flex-grow-1">
+      <div
+        v-if="isEmpty(listRender)"
+        class="h-100 d-flex justify-content-center align-items-center">
+        <h3 class="text-secondary fw-light">什么也没有找到 ∑( 口 ||</h3>
       </div>
-      <div class="card-body py-2">
-        <p class="card-title m-0">{{ item.title }}</p>
-        <i
-          :class="!item.isActive ? 'icon-like' : 'icon-like-fill'"
-          class="iconfont btn-like me-2"
-          @click.stop="toggleFavorite(item)" />
+      <div
+        v-for="item in listRender"
+        v-show="item.url"
+        :key="item.id"
+        v-masonry-tile
+        class="card my-3"
+        @click="jumpToDetail('/user/home/detail', item.id)">
+        <div class="card-img-top">
+          <img
+            :src="item.url"
+            alt="catImg"
+            class="img-thumbnail rounded-3 w-100" />
+        </div>
+        <div class="card-body py-2">
+          <p class="card-title m-0">{{ item.title }}</p>
+          <i
+            :class="!item.isActive ? 'icon-like' : 'icon-like-fill'"
+            class="iconfont btn-like me-2"
+            @click.stop="toggleFavorite(item)" />
+        </div>
       </div>
     </div>
   </section>
