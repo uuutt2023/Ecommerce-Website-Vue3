@@ -11,14 +11,14 @@ export const ChangePwd = [
     type: 'post',
     url: /api\/user\/changePwd/,
     path: '/api/user/changePwd',
-    todo: async (req) => {
+    todo: (req) => {
       const { username, password } = JSON.parse(req?.body);
       // 判断账号是否存在
       let hasAccount = find(userJson.data.userinfo, (user) => isEqual(user.username, username));
       if (hasAccount) {
         hasAccount.password = password;
         userJson.data.userinfo[username] = hasAccount;
-        await axios.put('/api/user', userJson);
+        axios.put('/api/user', userJson).then();
       }
       return {
         result: !isEmpty(hasAccount) ? 'success' : 'error',
