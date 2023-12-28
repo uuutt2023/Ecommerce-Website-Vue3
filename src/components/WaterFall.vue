@@ -4,9 +4,6 @@ import { computed, nextTick, onActivated, onMounted, ref, watch } from 'vue';
 import { flow, isEmpty, sampleSize, throttle, unionBy } from 'lodash';
 import { checkValueInterpolation, jumpToDetail, toggleFavorite } from '@/assets/js/util';
 import axios from 'axios';
-import store from '@/store/store';
-import router from '@/router';
-import { onBeforeRouteLeave } from 'vue-router';
 
 const { list, url, clickUrl, count, width } = defineProps({
   width: {
