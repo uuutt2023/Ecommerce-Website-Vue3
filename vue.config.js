@@ -14,6 +14,4 @@ module.exports = defineConfig({
       fullInstall: true,
     },
   },
-
-  publicPath: process.env.NODE_ENV === 'production' ? '/Ecommerce-Website-Vue3/' : '/',
 });
