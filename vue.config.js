@@ -1,5 +1,7 @@
 const { defineConfig } = require('@vue/cli-service');
 
+const ENV = process.env.NODE_ENV;
+
 module.exports = defineConfig({
   transpileDependencies: true,
   pluginOptions: {
@@ -13,4 +15,5 @@ module.exports = defineConfig({
       fullInstall: true,
     },
   },
+  publicPath: ENV === 'development' ? '' : '/Ecommerce-Website-Vue3/',
 });
