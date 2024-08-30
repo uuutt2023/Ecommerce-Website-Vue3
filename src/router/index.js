@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, useRoute } from 'vue-router';
+import { createRouter, useRoute } from 'vue-router';
 import store from '@/store/store';
 import _isEmpty from 'lodash/isEmpty';
 import _eq from 'lodash/eq';
@@ -88,7 +88,7 @@ const Web = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  // history: createWebHistory(),
   routes: [...Web],
 });
 
