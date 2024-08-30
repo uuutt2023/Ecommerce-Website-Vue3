@@ -5,6 +5,7 @@ import TopBar from '@/components/TopBar.vue';
 import { isNull, isObject } from 'lodash';
 import store from '@/store/store';
 import axios from 'axios';
+import { getUrlQueryParams } from '@/assets/js/util';
 
 // 详情页数据
 let detail = ref({
@@ -28,12 +29,10 @@ let detail = ref({
 const imgUrl = ref([]);
 nextTick(async () => {
   // 请求后端获取数据
-  await getDetail();
+  const id = getUrlQueryParams().id;
+  detail.value = (await axios.get(`/api/detail/cat${id}`)).data;
   imgUrl.value = [detail.value.url, ...(await axios.get('/api/random/img/cat?count=4')).data];
 });
-
-const getDetail = async () =>
-  (detail.value = (await axios.get(`/api/detail/cat${location.search}`)).data);
 
 // 发布评论
 const comment = ref(null);

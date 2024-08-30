@@ -7,7 +7,7 @@ import router from '@/router';
  * @param {String} url 要解析的 URL，不传则默认为当前 URL
  * @return {Object<key, value>} 一个<key, value>参数对象
  */
-export const getUrlQueryParams = (url = location.search) =>
+export const getUrlQueryParams = (url = location.hash.split('?').pop()) =>
   url
     .substring(url.indexOf('?') + 1)
     .split('&')

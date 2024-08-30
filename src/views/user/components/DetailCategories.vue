@@ -5,6 +5,7 @@ import { computed, nextTick, ref, watch } from 'vue';
 import { mapKeys, omit, omitBy, toPairs } from 'lodash/object';
 import { flow, isEmpty, map, pick, sortBy } from 'lodash';
 import * as echarts from 'echarts';
+import { getUrlQueryParams } from '@/assets/js/util';
 
 const detail = ref({
   body_type: '',
@@ -21,7 +22,8 @@ const detail = ref({
 });
 
 nextTick(async () => {
-  detail.value = (await axios.get(`/api/cat/info${location.search}`)).data[0];
+  const id = getUrlQueryParams().id;
+  detail.value = (await axios.get(`/api/cat/info/${id}`)).data;
   GetEchar();
 });
 
